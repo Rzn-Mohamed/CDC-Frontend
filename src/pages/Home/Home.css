@@ -1,0 +1,12 @@
+.Home {
+  padding: 20px;
+  text-align: center;
+}
+
+.Home h1 {
+  color: #282c34;
+}
+
+.Home p {
+  font-size: 18px;
+}
