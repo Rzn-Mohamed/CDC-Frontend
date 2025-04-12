@@ -2,21 +2,21 @@ import React from 'react';
 
 const Logo = () => {
   return (
-    <div className="flex justify-center">
-      <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center">
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          viewBox="0 0 24 24" 
-          fill="currentColor" 
-          className="w-8 h-8 text-white"
-        >
-          <path 
-            fillRule="evenodd" 
-            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 16v-2h2v2h-2zm0-5V7h2v6h-2z" 
-            clipRule="evenodd" 
-          />
-        </svg>
-      </div>
+    <div className="w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        className="h-6 w-6 text-white" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+      >
+        <path 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          strokeWidth={2} 
+          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
+        />
+      </svg>
     </div>
   );
 };
