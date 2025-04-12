@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Signup.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../components/Logo/Logo';
 import InputField from '../../components/InputField/InputField';
 
@@ -13,12 +13,14 @@ const Signup = () => {
   });
   
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState('');
+  const navigate = useNavigate();
   
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: '' });
     }
@@ -52,13 +54,61 @@ const Signup = () => {
     return Object.keys(newErrors).length === 0;
   };
   
-  const handleSubmit = (e) => {
+  
+  const registerUser = async (userData) => {
+    setIsLoading(true);
+    setApiError('');
+    
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: userData.fullName,  
+          email: userData.email,
+          password: userData.password,
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Registration failed');
+      }
+      
+      return data;
+    } catch (error) {
+      console.error('Registration error:', error);
+      setApiError(error.message || 'Something went wrong. Please try again.');
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (validateForm()) {
-      // Handle successful signup
-      console.log('Form submitted successfully', formData);
-      // Here you would typically call your API to register the user
+      try {
+        const result = await registerUser(formData);
+        console.log('Registration successful:', result);
+        
+        // Clear form
+        setFormData({
+          fullName: '',
+          email: '',
+          password: '',
+          confirmPassword: ''
+        });
+        
+        // Redirect to login page or dashboard
+        navigate('/login', { state: { message: 'Registration successful! Please log in.' } });
+      } catch (error) {
+        // Error is already handled in registerUser function
+      }
     }
   };
   
@@ -124,12 +174,21 @@ const Signup = () => {
               required
             />
             
+            {apiError && (
+              <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+                {apiError}
+              </div>
+            )}
+            
             <div className="pt-2">
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                disabled={isLoading}
+                className={`w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                  isLoading ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
               >
-                Sign Up
+                {isLoading ? 'Signing Up...' : 'Sign Up'}
               </button>
             </div>
           </form>
