@@ -13,6 +13,8 @@ const Login = () => {
   });
   
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState('');
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,15 +43,54 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
   
-  const handleSubmit = (e) => {
+  const loginUser = async (userData) => {
+    setIsLoading(true);
+    setApiError('');
+    
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: userData.email,
+          password: userData.password,
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+      
+      return data;
+    } catch (error) {
+      console.error('Login error:', error);
+      setApiError(error.message || 'Invalid credentials. Please try again.');
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (validateForm()) {
-      // Handle successful login
-      console.log('Login form submitted successfully', formData);
-      // Here you would typically call your API to authenticate the user
-      // For now, let's redirect to home page after successful validation
-      navigate('/home');
+      try {
+        const result = await loginUser(formData);
+        console.log('Login successful:', result);
+        
+        // Here you might store the token in localStorage
+        // localStorage.setItem('token', result.token);
+        
+        // Redirect to dashboard after successful login
+        navigate('/dashboard');
+      } catch (error) {
+        // Error is already handled in loginUser function
+      }
     }
   };
   
@@ -112,12 +153,21 @@ const Login = () => {
               </div>
             </div>
             
+            {apiError && (
+              <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+                {apiError}
+              </div>
+            )}
+            
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                disabled={isLoading}
+                className={`w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                  isLoading ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
               >
-                Sign In
+                {isLoading ? 'Signing In...' : 'Sign In'}
               </button>
             </div>
           </form>
