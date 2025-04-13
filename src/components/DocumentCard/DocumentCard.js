@@ -12,24 +12,6 @@ const DocumentCard = ({ document }) => {
     return colors[type] || 'bg-purple-100';
   };
 
-  const getInitials = (name) => {
-    return name
-      .split(' ')
-      .map(part => part[0])
-      .join('')
-      .toUpperCase();
-  };
-
-  // Function to create random pastel color for avatar backgrounds
-  const getAvatarColor = (name) => {
-    const colors = [
-      'bg-red-200', 'bg-blue-200', 'bg-green-200', 
-      'bg-yellow-200', 'bg-purple-200', 'bg-pink-200'
-    ];
-    const index = name.charCodeAt(0) % colors.length;
-    return colors[index];
-  };
-
   return (
     <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-4">
       <div className="flex items-start justify-between">
@@ -53,18 +35,7 @@ const DocumentCard = ({ document }) => {
         </div>
       </div>
       
-      <div className="mt-4 flex items-center justify-between">
-        <div className="flex -space-x-2 overflow-hidden">
-          {document.contributors.map((contributor, index) => (
-            <div 
-              key={index} 
-              className={`${getAvatarColor(contributor)} inline-flex items-center justify-center h-8 w-8 rounded-full border-2 border-white text-sm font-medium text-gray-800`}
-              title={contributor}
-            >
-              {getInitials(contributor)}
-            </div>
-          ))}
-        </div>
+      <div className="mt-4 flex items-center justify-end">
         <span className="px-2 py-1 text-xs font-medium bg-gray-100 rounded-full text-gray-800">
           {document.version}
         </span>
