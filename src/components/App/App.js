@@ -5,6 +5,7 @@ import Signup from '../../pages/Signup/Signup';
 import Login from '../../pages/Login/Login';
 import Home from '../../pages/Home/Home';
 import Dashboard from '../../pages/Dashboard/Dashboard';
+import CDCForm from '../../pages/CDCForm/CDCForm';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/create-cdc" element={<CDCForm />} />
           <Route path="/" element={<Navigate to="/dashboard" />} />
         </Routes>
       </div>
