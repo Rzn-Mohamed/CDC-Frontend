@@ -5,33 +5,82 @@ import Layout from '../../components/Layout/Layout';
 import { Link } from 'react-router-dom';
 
 const Profile = () => {
-  // Demo user data - in a real app, this would come from an API
   const [user, setUser] = useState({
-    fullName: 'Razin Mohamed',
-    email: 'razin@example.com',
-    phone: '+1 (555) 123-4567',
-    jobTitle: 'Product Manager',
-    department: 'Product Development',
-    company: 'CDC Corp',
-    location: 'San Francisco, CA',
-    bio: 'Experienced product manager with a passion for creating intuitive user experiences.',
-    profilePicture: null, // null indicates no uploaded picture
+    fullName: '',
+    email: '',
+    phone: '',
+    jobTitle: '',
+    department: '',
+    company: '',
+    location: '',
+    bio: '',
+    profilePicture: null,
     plan: 'Professional',
-    memberSince: 'April 2023',
-    lastLogin: 'Today at 9:30 AM'
+    memberSince: '',
+    lastLogin: 'Today'
   });
   
   const [isLoading, setIsLoading] = useState(true);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
+  const [error, setError] = useState(null);
 
-  // Simulate API fetch
+  // Fetch user profile from backend API
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
+    const fetchUserProfile = async () => {
+      setIsLoading(true);
+      try {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+          throw new Error('No authentication token found');
+        }
+        
+        const response = await fetch('http://localhost:8080/api/user/profile', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch profile data');
+        }
+        
+        const data = await response.json();
+        
+        // Format and set the user data
+        setUser({
+          fullName: data.name || '',
+          email: data.email || '',
+          phone: data.phoneNumber || '',
+          address: data.address || '',
+          jobTitle: data.jobTitle || '',
+          department: data.department || '',
+          company: data.company || 'CDC Corp',
+          location: data.location || '',
+          bio: data.bio || '',
+          profilePicture: data.profilePic || null,
+          plan: data.plan || 'Professional',
+          memberSince: data.memberSince ? new Date(data.memberSince).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long'
+          }) : 'April 2023',
+          lastLogin: data.lastLogin ? new Date(data.lastLogin).toLocaleString() : 'Today at 9:30 AM'
+        });
+        
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching profile:', err);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     
-    return () => clearTimeout(timer);
+    fetchUserProfile();
   }, []);
 
   // Get user initials for avatar
@@ -46,13 +95,16 @@ const Profile = () => {
   };
 
   const handleLogout = () => {
-    // In a real app, this would clear authentication tokens/cookies
+    // Clear authentication tokens/cookies
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     console.log('Logging out...');
-    // Redirect to login page would be done here
+    // Redirect to login page
     window.location.href = '/login';
   };
 
   const handleDeleteAccount = () => {
+    // Implement account deletion logic here
     console.log('Account deleted');
     setShowDeleteConfirm(false);
     // In a real app, would call API to delete account then redirect
@@ -64,6 +116,25 @@ const Profile = () => {
       <Layout>
         <div className="flex justify-center items-center min-h-[50vh]">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+        </div>
+      </Layout>
+    );
+  }
+  
+  if (error) {
+    return (
+      <Layout>
+        <div className="flex flex-col items-center justify-center min-h-[50vh]">
+          <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-4">
+            <p className="font-semibold">Error loading profile</p>
+            <p>{error}</p>
+          </div>
+          <button 
+            onClick={handleLogout}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+          >
+            Return to Login
+          </button>
         </div>
       </Layout>
     );
@@ -203,66 +274,59 @@ const Profile = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                     <div>
                       <div className="text-sm font-medium text-gray-500">Full Name</div>
-                      <div className="mt-1 text-sm text-gray-900">{user.fullName}</div>
+                      <div className="mt-1 text-sm text-gray-900">{user.fullName || "Not specified yet"}</div>
                     </div>
                     
                     <div>
                       <div className="text-sm font-medium text-gray-500">Email Address</div>
-                      <div className="mt-1 text-sm text-gray-900">{user.email}</div>
+                      <div className="mt-1 text-sm text-gray-900">{user.email || "Not specified yet"}</div>
                     </div>
                     
-                    {user.phone && (
-                      <div>
-                        <div className="text-sm font-medium text-gray-500">Phone Number</div>
-                        <div className="mt-1 text-sm text-gray-900">{user.phone}</div>
-                      </div>
-                    )}
+                    <div>
+                      <div className="text-sm font-medium text-gray-500">Phone Number</div>
+                      <div className="mt-1 text-sm text-gray-900">{user.phone || "Not specified yet"}</div>
+                    </div>
                     
-                    {user.location && (
-                      <div>
-                        <div className="text-sm font-medium text-gray-500">Location</div>
-                        <div className="mt-1 text-sm text-gray-900">{user.location}</div>
-                      </div>
-                    )}
+                    <div>
+                      <div className="text-sm font-medium text-gray-500">Address</div>
+                      <div className="mt-1 text-sm text-gray-900">{user.address || "Not specified yet"}</div>
+                    </div>
                     
-                    {user.jobTitle && (
-                      <div>
-                        <div className="text-sm font-medium text-gray-500">Job Title</div>
-                        <div className="mt-1 text-sm text-gray-900">{user.jobTitle}</div>
-                      </div>
-                    )}
+                    <div>
+                      <div className="text-sm font-medium text-gray-500">Location</div>
+                      <div className="mt-1 text-sm text-gray-900">{user.location || "Not specified yet"}</div>
+                    </div>
                     
-                    {user.department && (
-                      <div>
-                        <div className="text-sm font-medium text-gray-500">Department</div>
-                        <div className="mt-1 text-sm text-gray-900">{user.department}</div>
-                      </div>
-                    )}
+                    <div>
+                      <div className="text-sm font-medium text-gray-500">Job Title</div>
+                      <div className="mt-1 text-sm text-gray-900">{user.jobTitle || "Not specified yet"}</div>
+                    </div>
                     
-                    {user.company && (
-                      <div>
-                        <div className="text-sm font-medium text-gray-500">Company</div>
-                        <div className="mt-1 text-sm text-gray-900">{user.company}</div>
-                      </div>
-                    )}
+                    <div>
+                      <div className="text-sm font-medium text-gray-500">Department</div>
+                      <div className="mt-1 text-sm text-gray-900">{user.department || "Not specified yet"}</div>
+                    </div>
+                    
+                    <div>
+                      <div className="text-sm font-medium text-gray-500">Company</div>
+                      <div className="mt-1 text-sm text-gray-900">{user.company || "Not specified yet"}</div>
+                    </div>
                     
                     <div>
                       <div className="text-sm font-medium text-gray-500">Member Since</div>
-                      <div className="mt-1 text-sm text-gray-900">{user.memberSince}</div>
+                      <div className="mt-1 text-sm text-gray-900">{user.memberSince || "Not specified yet"}</div>
                     </div>
                     
                     <div>
                       <div className="text-sm font-medium text-gray-500">Last Login</div>
-                      <div className="mt-1 text-sm text-gray-900">{user.lastLogin}</div>
+                      <div className="mt-1 text-sm text-gray-900">{user.lastLogin || "Not specified yet"}</div>
                     </div>
                   </div>
                   
-                  {user.bio && (
-                    <div className="mt-6">
-                      <div className="text-sm font-medium text-gray-500">Bio</div>
-                      <div className="mt-1 text-sm text-gray-900 whitespace-pre-line">{user.bio}</div>
-                    </div>
-                  )}
+                  <div className="mt-6">
+                    <div className="text-sm font-medium text-gray-500">Bio</div>
+                    <div className="mt-1 text-sm text-gray-900 whitespace-pre-line">{user.bio || "Not specified yet"}</div>
+                  </div>
                 </div>
               </div>
             )}

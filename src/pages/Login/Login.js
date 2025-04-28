@@ -83,8 +83,8 @@ const Login = () => {
         const result = await loginUser(formData);
         console.log('Login successful:', result);
         
-        // Here you might store the token in localStorage
-        // localStorage.setItem('token', result.token);
+        // Store the token in localStorage
+        localStorage.setItem('token', result.token);
         
         // Redirect to dashboard after successful login
         navigate('/dashboard');
