@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Logo from '../Logo/Logo';
+// eslint-disable-next-line no-unused-vars
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Header = ({ hideSearch }) => {
