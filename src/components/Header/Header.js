@@ -1,7 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Logo from '../Logo/Logo';
+import { useAuth } from '../../context/AuthContext';
 
 const Header = () => {
+  const { currentUser, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   return (
     <header className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,15 +52,21 @@ const Header = () => {
               </svg>
             </button>
             
-            {/* User profile */}
+            {/* User profile with logout */}
             <div className="ml-3 relative">
-              <div>
-                <button className="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                  <span className="sr-only">Open user menu</span>
-                  <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white">
-                    RM
-                  </div>
-                </button>
+              <div className="flex items-center">
+                <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white">
+                  {currentUser ? currentUser.name?.charAt(0) || 'U' : 'G'}
+                </div>
+                
+                {currentUser && (
+                  <button 
+                    onClick={handleLogout}
+                    className="ml-3 text-sm font-medium text-gray-700 hover:text-indigo-600"
+                  >
+                    Logout
+                  </button>
+                )}
               </div>
             </div>
           </div>

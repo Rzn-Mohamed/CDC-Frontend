@@ -1,12 +1,19 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 import './Login.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Logo from '../../components/Logo/Logo';
 import InputField from '../../components/InputField/InputField';
+import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
+  
+  // Get the previous location the user was trying to access
+  const from = location.state?.from?.pathname || '/dashboard';
+  
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -83,11 +90,11 @@ const Login = () => {
         const result = await loginUser(formData);
         console.log('Login successful:', result);
         
-        // Here you might store the token in localStorage
-        // localStorage.setItem('token', result.token);
+        // Use the login function from AuthContext to store user data
+        login(result);
         
-        // Redirect to dashboard after successful login
-        navigate('/dashboard');
+        // Redirect user to where they were trying to go or dashboard
+        navigate(from, { replace: true });
       } catch (error) {
         // Error is already handled in loginUser function
       }

@@ -6,21 +6,42 @@ import Login from '../../pages/Login/Login';
 import Home from '../../pages/Home/Home';
 import Dashboard from '../../pages/Dashboard/Dashboard';
 import CDCForm from '../../pages/CDCForm/CDCForm';
+import { AuthProvider } from '../../context/AuthContext';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/create-cdc" element={<CDCForm />} />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Routes>
+            {/* Public routes */}
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            
+            {/* Protected routes */}
+            <Route path="/home" element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/create-cdc" element={
+              <ProtectedRoute>
+                <CDCForm />
+              </ProtectedRoute>
+            } />
+            
+            {/* Default route - redirect to login */}
+            <Route path="/" element={<Navigate to="/login" />} />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
