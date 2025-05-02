@@ -1,0 +1,45 @@
+/* Profile Page Styles */
+.profile-gradient-bg {
+  background-image: linear-gradient(to right, #4f46e5, #7c3aed);
+}
+
+/* Avatar animation on hover */
+.profile-avatar {
+  transition: transform 0.3s ease;
+}
+
+.profile-avatar:hover {
+  transform: scale(1.05);
+}
+
+/* Custom card styles */
+.profile-card {
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.profile-card:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Make form elements accessible */
+@media (prefers-reduced-motion: reduce) {
+  .profile-avatar, 
+  .profile-card {
+    transition: none;
+  }
+}
+
+/* Focus styles for accessibility */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
+}
+
+/* High contrast mode adjustments */
+@media (forced-colors: active) {
+  .profile-card {
+    border: 1px solid CanvasText;
+  }
+}

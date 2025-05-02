@@ -6,6 +6,7 @@ import Login from '../../pages/Login/Login';
 import Home from '../../pages/Home/Home';
 import Dashboard from '../../pages/Dashboard/Dashboard';
 import CDCForm from '../../pages/CDCForm/CDCForm';
+import Profile from '../../pages/Profile/Profile';
 import { AuthProvider } from '../../context/AuthContext';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
@@ -28,6 +29,11 @@ function App() {
             <Route path="/dashboard" element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             } />
             <Route path="/create-cdc" element={

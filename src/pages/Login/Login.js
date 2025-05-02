@@ -91,7 +91,9 @@ const Login = () => {
         console.log('Login successful:', result);
         
         // Use the login function from AuthContext to store user data
+        // and store the token in localStorage
         login(result);
+        localStorage.setItem('token', result.token);
         
         // Redirect user to where they were trying to go or dashboard
         navigate(from, { replace: true });

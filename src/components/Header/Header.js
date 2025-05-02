@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../Logo/Logo';
 import { useAuth } from '../../context/AuthContext';
 
-const Header = () => {
+const Header = ({ hideSearch }) => {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  const handleProfileClick = () => {
+    setShowProfileMenu(!showProfileMenu);
+  };
+
+  const navigateToProfile = () => {
+    navigate('/profile');
+    setShowProfileMenu(false);
+  };
 
   const handleLogout = () => {
     logout();
@@ -24,23 +34,25 @@ const Header = () => {
             </div>
           </div>
           
-          {/* Center - Search Bar */}
-          <div className="flex-1 flex items-center justify-center px-2 lg:ml-6 lg:justify-center">
-            <div className="max-w-lg w-full">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
+          {/* Center - Search Bar (conditionally rendered) */}
+          {!hideSearch && (
+            <div className="flex-1 flex items-center justify-center px-2 lg:ml-6 lg:justify-center">
+              <div className="max-w-lg w-full">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Search documents..."
+                  />
                 </div>
-                <input
-                  type="text"
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder="Search documents..."
-                />
               </div>
             </div>
-          </div>
+          )}
           
           {/* Right side - User profile and notifications */}
           <div className="flex items-center">
@@ -54,20 +66,44 @@ const Header = () => {
             
             {/* User profile with logout */}
             <div className="ml-3 relative">
-              <div className="flex items-center">
-                <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white">
-                  {currentUser ? currentUser.name?.charAt(0) || 'U' : 'G'}
-                </div>
-                
-                {currentUser && (
-                  <button 
-                    onClick={handleLogout}
-                    className="ml-3 text-sm font-medium text-gray-700 hover:text-indigo-600"
-                  >
-                    Logout
-                  </button>
-                )}
+              <div>
+                <button 
+                  onClick={handleProfileClick}
+                  className="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  aria-expanded={showProfileMenu}
+                  aria-haspopup="true"
+                >
+                  <span className="sr-only">Open user menu</span>
+                  <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white">
+                    {currentUser ? currentUser.name?.charAt(0) || 'U' : 'G'}
+                  </div>
+                </button>
               </div>
+              
+              {/* Profile dropdown menu */}
+              {showProfileMenu && (
+                <div 
+                  className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="user-menu-button"
+                >
+                  <button
+                    onClick={navigateToProfile}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    role="menuitem"
+                  >
+                    Your Profile
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    role="menuitem"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
