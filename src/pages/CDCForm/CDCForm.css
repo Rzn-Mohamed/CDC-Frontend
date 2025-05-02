@@ -4,15 +4,18 @@
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   margin-top: 1.5rem;
+  max-height: 80vh;
+  overflow: hidden;
 }
 
 /* Sidebar Styles */
 .cdc-sidebar {
-  width: 280px;
+  width: 250px;
   background-color: white;
   border-right: 1px solid #e5e7eb;
   border-radius: 8px 0 0 8px;
-  padding: 1.5rem 0;
+  padding: 1rem 0;
+  overflow-y: auto;
 }
 
 .sidebar-title {
@@ -74,8 +77,9 @@
 /* Content Styles */
 .cdc-content {
   flex: 1;
-  padding: 2rem;
+  padding: 1.5rem;
   overflow-y: auto;
+  max-height: 80vh;
 }
 
 .cdc-form-header {
@@ -189,13 +193,20 @@
 @media (max-width: 768px) {
   .cdc-form-container {
     flex-direction: column;
+    max-height: none;
   }
   
   .cdc-sidebar {
     width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
     border-right: none;
     border-bottom: 1px solid #e5e7eb;
     border-radius: 8px 8px 0 0;
+  }
+  
+  .cdc-content {
+    max-height: 60vh;
   }
   
   .sidebar-item {

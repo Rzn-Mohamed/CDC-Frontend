@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Layout from '../../components/Layout/Layout';
 import './CDCForm.css';
 
 // Form sections components
@@ -15,8 +13,7 @@ import Budget from './sections/Budget';
 import CriteresValidation from './sections/CriteresValidation';
 import Annexes from './sections/Annexes';
 
-const CDCForm = () => {
-  const navigate = useNavigate();
+const CDCForm = ({ onClose }) => {
   const [activeStep, setActiveStep] = useState(0);
   
   // Form data state
@@ -114,13 +111,11 @@ const CDCForm = () => {
   const handleSubmit = () => {
     console.log('Form Data:', formData);
     // Here you would typically send the data to your backend
-    // For now, we'll just navigate to the dashboard
-    navigate('/dashboard', { 
-      state: { 
-        message: 'Cahier des charges généré avec succès!',
-        cdcData: formData
-      } 
-    });
+    
+    // Close the modal after submitting
+    if (onClose) {
+      onClose();
+    }
   };
   
   // Handle form field changes
@@ -138,59 +133,57 @@ const CDCForm = () => {
   const CurrentSection = sections[activeStep].component;
   
   return (
-    <Layout>
-      <div className="cdc-form-container">
-        {/* Sidebar Navigation */}
-        <div className="cdc-sidebar">
-          <h2 className="sidebar-title">Cahier des Charges</h2>
-          <ul className="sidebar-nav">
-            {sections.map((section, index) => (
-              <li 
-                key={index}
-                className={`sidebar-item ${activeStep === index ? 'active' : ''}`}
-                onClick={() => setActiveStep(index)}
-              >
-                <span className="sidebar-number">{index + 1}</span>
-                <span className="sidebar-text">{section.title}</span>
-              </li>
-            ))}
-          </ul>
+    <div className="cdc-form-container">
+      {/* Sidebar Navigation */}
+      <div className="cdc-sidebar">
+        <h2 className="sidebar-title">Cahier des Charges</h2>
+        <ul className="sidebar-nav">
+          {sections.map((section, index) => (
+            <li 
+              key={index}
+              className={`sidebar-item ${activeStep === index ? 'active' : ''}`}
+              onClick={() => setActiveStep(index)}
+            >
+              <span className="sidebar-number">{index + 1}</span>
+              <span className="sidebar-text">{section.title}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      
+      {/* Form Content */}
+      <div className="cdc-content">
+        <div className="cdc-form-header">
+          <h2>{sections[activeStep].title}</h2>
+          <div className="step-indicator">
+            Étape {activeStep + 1} / {sections.length}
+          </div>
         </div>
         
-        {/* Form Content */}
-        <div className="cdc-content">
-          <div className="cdc-form-header">
-            <h2>{sections[activeStep].title}</h2>
-            <div className="step-indicator">
-              Étape {activeStep + 1} / {sections.length}
-            </div>
-          </div>
-          
-          <div className="cdc-form-body">
-            <CurrentSection 
-              formData={formData} 
-              onChange={(field, value) => handleChange(Object.keys(formData)[activeStep], field, value)} 
-            />
-          </div>
-          
-          <div className="cdc-form-navigation">
-            <button 
-              className="btn-previous"
-              onClick={handlePrev}
-              disabled={activeStep === 0}
-            >
-              Précédent
-            </button>
-            <button 
-              className="btn-next"
-              onClick={handleNext}
-            >
-              {activeStep === sections.length - 1 ? 'Générer' : 'Suivant'}
-            </button>
-          </div>
+        <div className="cdc-form-body">
+          <CurrentSection 
+            formData={formData} 
+            onChange={(field, value) => handleChange(Object.keys(formData)[activeStep], field, value)} 
+          />
+        </div>
+        
+        <div className="cdc-form-navigation">
+          <button 
+            className="btn-previous"
+            onClick={handlePrev}
+            disabled={activeStep === 0}
+          >
+            Précédent
+          </button>
+          <button 
+            className="btn-next"
+            onClick={handleNext}
+          >
+            {activeStep === sections.length - 1 ? 'Générer' : 'Suivant'}
+          </button>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 
