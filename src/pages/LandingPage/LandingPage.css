@@ -58,6 +58,17 @@ html {
 .theme-toggle-btn {
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-btn span {
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
 }
 
 .theme-toggle-btn i {
@@ -68,46 +79,21 @@ html {
   transform: rotate(45deg);
 }
 
-/* Floating Theme Toggle Button */
+.theme-toggle-btn:hover {
+  background-color: rgba(99, 102, 241, 0.1);
+}
+
+.dark .theme-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Remove floating theme toggle styles since we don't need them anymore */
 .theme-toggle-floating {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 9999;
+  display: none;
 }
 
 .theme-toggle-floating-btn {
-  display: flex;
-  align-items: center;
-  background: linear-gradient(to right, #4F46E5, #6366F1);
-  color: white;
-  padding: 10px 16px;
-  border-radius: 30px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.theme-toggle-floating-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-}
-
-.theme-toggle-floating-btn i {
-  margin-right: 8px;
-  font-size: 1rem;
-}
-
-.theme-toggle-floating-btn span {
-  font-size: 0.875rem;
-}
-
-/* Dark mode version of the floating button */
-.dark .theme-toggle-floating-btn {
-  background: linear-gradient(to right, #EAB308, #F59E0B);
-  color: #1E293B;
+  display: none;
 }
 
 .glassmorphism {
@@ -169,7 +155,7 @@ html {
     margin-bottom: 2.5rem;
   }
   
-  .theme-toggle-floating-btn span {
+  .theme-toggle-btn span {
     display: none;
   }
   
