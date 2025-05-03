@@ -7,6 +7,7 @@ import Home from '../../pages/Home/Home';
 import Dashboard from '../../pages/Dashboard/Dashboard';
 import CDCForm from '../../pages/CDCForm/CDCForm';
 import Profile from '../../pages/Profile/Profile';
+import LandingPage from '../../pages/LandingPage/LandingPage';
 import { AuthProvider } from '../../context/AuthContext';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
@@ -17,6 +18,7 @@ function App() {
         <div className="App">
           <Routes>
             {/* Public routes */}
+            <Route path="/" element={<LandingPage />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             
@@ -41,9 +43,6 @@ function App() {
                 <CDCForm />
               </ProtectedRoute>
             } />
-            
-            {/* Default route - redirect to login */}
-            <Route path="/" element={<Navigate to="/login" />} />
           </Routes>
         </div>
       </Router>
