@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout/Layout';
 import FilterBar from '../../components/FilterBar/FilterBar';
 import DocumentGrid from '../../components/DocumentGrid/DocumentGrid';
@@ -8,6 +9,7 @@ import CDCForm from '../CDCForm/CDCForm';
 import { documentsData } from '../../utils/dummyData';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState('grid');
   const [documents] = useState(documentsData);
   const [isModalOpen, setIsModalOpen] = useState(false);

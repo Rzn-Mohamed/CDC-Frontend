@@ -28,7 +28,7 @@ const Header = ({ hideSearch }) => {
         <div className="flex justify-between h-16">
           {/* Left side - Logo and title */}
           <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
+            <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => navigate('/dashboard')}>
               <Logo />
               <span className="ml-2 text-lg font-semibold text-gray-800">CDC Manager</span>
             </div>
