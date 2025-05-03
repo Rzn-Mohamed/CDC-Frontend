@@ -1,15 +1,15 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Signup from '../../pages/Signup/Signup';
-import Login from '../../pages/Login/Login';
-import Home from '../../pages/Home/Home';
-import Dashboard from '../../pages/Dashboard/Dashboard';
-import CDCForm from '../../pages/CDCForm/CDCForm';
-import Profile from '../../pages/Profile/Profile';
-import LandingPage from '../../pages/LandingPage/LandingPage';
-import { AuthProvider } from '../../context/AuthContext';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import Signup from '../../pages/Signup/Signup.js';
+import Login from '../../pages/Login/Login.js';
+import Home from '../../pages/Home/Home.js';
+import Dashboard from '../../pages/Dashboard/Dashboard.js';
+import CDCForm from '../../pages/CDCForm/CDCForm.js';
+import Profile from '../../pages/Profile/Profile.js';
+import LandingPage from '../../pages/LandingPage/LandingPage.js';
+import { AuthProvider } from '../../context/AuthContext.js';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
 
 function App() {
   return (

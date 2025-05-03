@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import './CDCForm.css';
 
 // Form sections components
-import PageDeGarde from './sections/PageDeGarde';
-import Introduction from './sections/Introduction';
-import ObjectifsProjet from './sections/ObjectifsProjet';
-import DescriptionBesoin from './sections/DescriptionBesoin';
-import PerimetreFonctionnel from './sections/PerimetreFonctionnel';
-import ContraintesTechniques from './sections/ContraintesTechniques';
-import PlanningPrevisionnel from './sections/PlanningPrevisionnel';
-import Budget from './sections/Budget';
-import CriteresValidation from './sections/CriteresValidation';
-import Annexes from './sections/Annexes';
+import PageDeGarde from './sections/PageDeGarde.js';
+import Introduction from './sections/Introduction.js';
+import ObjectifsProjet from './sections/ObjectifsProjet.js';
+import DescriptionBesoin from './sections/DescriptionBesoin.js';
+import PerimetreFonctionnel from './sections/PerimetreFonctionnel.js';
+import ContraintesTechniques from './sections/ContraintesTechniques.js';
+import PlanningPrevisionnel from './sections/PlanningPrevisionnel.js';
+import Budget from './sections/Budget.js';
+import CriteresValidation from './sections/CriteresValidation.js';
+import Annexes from './sections/Annexes.js';
 
 const CDCForm = ({ onClose }) => {
   const [activeStep, setActiveStep] = useState(0);

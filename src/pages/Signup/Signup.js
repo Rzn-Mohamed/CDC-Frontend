@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './Signup.css';
 import { Link, useNavigate } from 'react-router-dom';
-import Logo from '../../components/Logo/Logo';
-import InputField from '../../components/InputField/InputField';
+import Logo from '../../components/Logo/Logo.js';
+import InputField from '../../components/InputField/InputField.js';
 
 const Signup = () => {
   const [formData, setFormData] = useState({

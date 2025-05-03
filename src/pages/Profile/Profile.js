@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import './Profile.css';
-import Layout from '../../components/Layout/Layout';
+import Layout from '../../components/Layout/Layout.js';
 import { Link } from 'react-router-dom';
 
 const Profile = () => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Logo from '../Logo/Logo';
-import { useAuth } from '../../context/AuthContext';
+import Logo from '../Logo/Logo.js';
+import { useAuth } from '../../context/AuthContext.js';
 
 const Header = ({ hideSearch }) => {
   const { currentUser, logout } = useAuth();

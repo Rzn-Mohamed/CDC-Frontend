@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Layout from '../../components/Layout/Layout';
-import FilterBar from '../../components/FilterBar/FilterBar';
-import DocumentGrid from '../../components/DocumentGrid/DocumentGrid';
-import FloatingActionButton from '../../components/FloatingActionButton/FloatingActionButton';
-import Modal from '../../components/Modal/Modal';
-import CDCForm from '../CDCForm/CDCForm';
-import { documentsData } from '../../utils/dummyData';
+import Layout from '../../components/Layout/Layout.js';
+import FilterBar from '../../components/FilterBar/FilterBar.js';
+import DocumentGrid from '../../components/DocumentGrid/DocumentGrid.js';
+import FloatingActionButton from '../../components/FloatingActionButton/FloatingActionButton.js';
+import Modal from '../../components/Modal/Modal.js';
+import CDCForm from '../CDCForm/CDCForm.js';
+import { documentsData } from '../../utils/dummyData.js';
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState('grid');
   const [documents] = useState(documentsData);
   const [isModalOpen, setIsModalOpen] = useState(false);

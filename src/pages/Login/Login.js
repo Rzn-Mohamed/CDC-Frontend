@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import './Login.css';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import Logo from '../../components/Logo/Logo';
-import InputField from '../../components/InputField/InputField';
-import { useAuth } from '../../context/AuthContext';
+import Logo from '../../components/Logo/Logo.js';
+import InputField from '../../components/InputField/InputField.js';
+import { useAuth } from '../../context/AuthContext.js';
 
 const Login = () => {
   const navigate = useNavigate();

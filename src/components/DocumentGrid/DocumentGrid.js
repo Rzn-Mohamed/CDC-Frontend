@@ -1,5 +1,5 @@
 import React from 'react';
-import DocumentCard from '../DocumentCard/DocumentCard';
+import DocumentCard from '../DocumentCard/DocumentCard.js';
 
 const DocumentGrid = ({ documents, viewMode }) => {
   return (
