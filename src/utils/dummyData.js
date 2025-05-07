@@ -4,7 +4,7 @@ export const documentsData = [
     title: 'CDC - Project Alpha',
     type: 'pdf',
     lastModified: 'Today at 2:30 PM',
-    version: 'v1.5',
+    version: 'v2.0 Flash',
     contributors: ['John Doe', 'Mary Smith', 'Robert Johnson']
   },
   {
@@ -12,7 +12,7 @@ export const documentsData = [
     title: 'CDC - Marketing Campaign',
     type: 'doc',
     lastModified: 'Yesterday at 10:15 AM',
-    version: 'v2.0',
+    version: 'v2.0 Flash',
     contributors: ['Alex Williams', 'Sarah Parker']
   },
   {
@@ -20,7 +20,7 @@ export const documentsData = [
     title: 'CDC - Financial Report',
     type: 'xls',
     lastModified: '2 days ago',
-    version: 'v1.0',
+    version: 'v2.0 Flash',
     contributors: ['James Wilson', 'Emily Davis', 'Michael Brown', 'Lisa Moore']
   },
   {
@@ -28,7 +28,7 @@ export const documentsData = [
     title: 'CDC - Quarterly Presentation',
     type: 'ppt',
     lastModified: 'Last week',
-    version: 'v3.2',
+    version: 'v2.0 Flash',
     contributors: ['David Miller', 'Jennifer Garcia']
   },
   {
@@ -36,7 +36,7 @@ export const documentsData = [
     title: 'CDC - User Research',
     type: 'pdf',
     lastModified: '2 weeks ago',
-    version: 'v1.1',
+    version: 'v2.0 Flash',
     contributors: ['Thomas Anderson', 'Olivia Martin', 'William Taylor']
   },
   {
@@ -44,7 +44,7 @@ export const documentsData = [
     title: 'CDC - Product Roadmap',
     type: 'doc',
     lastModified: 'Mar 15, 2023',
-    version: 'v2.3',
+    version: 'v2.0 Flash',
     contributors: ['Christopher Clark', 'Elizabeth Lewis']
   },
   {
@@ -52,7 +52,7 @@ export const documentsData = [
     title: 'CDC - Sales Data Analysis',
     type: 'xls',
     lastModified: 'Mar 10, 2023',
-    version: 'v1.7',
+    version: 'v2.0 Flash',
     contributors: ['Richard Hall', 'Patricia White', 'Daniel Lee']
   },
   {
@@ -60,7 +60,7 @@ export const documentsData = [
     title: 'CDC - Brand Guidelines',
     type: 'pdf',
     lastModified: 'Feb 28, 2023',
-    version: 'v4.0',
+    version: 'v2.0 Flash',
     contributors: ['Joseph Adams', 'Michelle Scott', 'Kevin Young']
   }
 ];

@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cahier des Charges - Projet</title>
+    <link rel="stylesheet" href="cdc-style.css">
+</head>
+<body>
+    <!-- Contrôles (non imprimables) -->
+    <div class="controls no-print">
+        <button class="btn" onclick="window.print()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                <rect x="6" y="14" width="12" height="8"></rect>
+            </svg>
+            Imprimer
+        </button>
+        <button class="btn btn-secondary" id="editButton">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            Modifier
+        </button>
+        <button class="btn btn-secondary" id="downloadPdfButton">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Télécharger PDF
+        </button>
+    </div>
+
+    <div class="cdc-document">
+        <!-- Date de génération -->
+        <div class="generate-date" contenteditable="true">Document généré le <span id="current-date"></span></div>
+
+        <!-- Page de garde -->
+        <div class="cover-page">
+            <div class="cover-header">
+                <div class="logo-placeholder" contenteditable="true">
+                    <span class="upload-prompt">Cliquez pour ajouter un logo</span>
+                </div>
+            </div>
+            
+            <div class="cover-content">
+                <h1 class="cover-title" contenteditable="true">CAHIER DES CHARGES</h1>
+                <h2 class="project-name" contenteditable="true">Titre du projet</h2>
+                <p class="client-name" contenteditable="true">Pour : Nom du client</p>
+            </div>
+            
+            <div class="document-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Version du document :</span>
+                    <span class="meta-value" contenteditable="true">1.0</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Date :</span>
+                    <span class="meta-value" contenteditable="true" id="doc-date"></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Rédigé par :</span>
+                    <span class="meta-value" contenteditable="true">Prénom Nom</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Statut :</span>
+                    <span class="meta-value" contenteditable="true">Brouillon</span>
+                </div>
+            </div>
+            
+            <div class="cover-footer">
+                <p contenteditable="true">Confidentiel – Reproduction interdite sans autorisation</p>
+            </div>
+        </div>
+        
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2 class="toc-title">Table des matières</h2>
+            <ul class="toc-list">
+                <li class="toc-item">
+                    <span class="toc-item-number">1.</span>
+                    <span class="toc-item-title">Introduction</span>
+                    <span class="toc-item-dots"></span>
+                    <span class="toc-item-page">3</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-item-number">2.</span>
+                    <span class="toc-item-title">Objectifs du projet</span>
+                    <span class="toc-item-dots"></span>
+                    <span class="toc-item-page">4</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-item-number">3.</span>
+                    <span class="toc-item-title">Description du besoin</span>
+                    <span class="toc-item-dots"></span>
+                    <span class="toc-item-page">5</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-item-number">4.</span>
+                    <span class="toc-item-title">Périmètre fonctionnel</span>
+                    <span class="toc-item-dots"></span>
+                    <span class="toc-item-page">7</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-item-number">5.</span>
+                    <span class="toc-item-title">Contraintes techniques</span>
+                    <span class="toc-item-dots"></span>
+                    <span class="toc-item-page">10</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-item-number">6.</span>
+                    <span class="toc-item-title">Planning prévisionnel</span>
+                    <span class="toc-item-dots"></span>
+                    <span class="toc-item-page">12</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-item-number">7.</span>
+                    <span class="toc-item-title">Budget</span>
+                    <span class="toc-item-dots"></span>
+                    <span class="toc-item-page">13</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-item-number">8.</span>
+                    <span class="toc-item-title">Critères de validation</span>
+                    <span class="toc-item-dots"></span>
+                    <span class="toc-item-page">14</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-item-number">9.</span>
+                    <span class="toc-item-title">Annexes</span>
+                    <span class="toc-item-dots"></span>
+                    <span class="toc-item-page">15</span>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Introduction -->
+        <div class="section">
+            <h2 class="section-title">1. Introduction</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">1.1 Contexte du projet</h3>
+                <div class="content-block">
+                    <p>EcoStyle est une jeune marque de vêtements spécialisée dans la mode éco-responsable qui connaît une croissance rapide depuis son lancement en 2023. Actuellement, la marque vend ses produits via des boutiques partenaires et des plateformes tierces comme Etsy et Shopify. Face à l'augmentation de la demande et pour mieux maîtriser l'expérience client, EcoStyle souhaite se doter d'une plateforme e-commerce propriétaire reflétant ses valeurs et son identité visuelle.</p>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">1.2 Objectif global</h3>
+                <div class="content-block">
+                    <p>L'objectif principal est de créer une plateforme e-commerce performante, esthétique et engageante qui permettra à EcoStyle de vendre directement ses produits aux consommateurs finaux, tout en communiquant efficacement sur ses valeurs écologiques et éthiques.</p>
+                    <p>La plateforme devra refléter l'identité de la marque, mettre en valeur les matériaux utilisés et les processus de fabrication responsables, et offrir une expérience d'achat fluide et agréable pour l'utilisateur final.</p>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">1.3 Présentation du commanditaire</h3>
+                <div class="content-block">
+                    <p>EcoStyle SAS est une entreprise française créée en 2023 par trois entrepreneurs passionnés par la mode durable. Basée à Lyon, l'entreprise compte aujourd'hui 12 employés et collabore avec une dizaine d'ateliers de confection en France et au Portugal. Tous les vêtements sont fabriqués à partir de matières biologiques, recyclées ou issues du commerce équitable.</p>
+                    <p>En 2024, EcoStyle a réalisé un chiffre d'affaires de 1,2 million d'euros, en croissance de 60% par rapport à l'année précédente. L'entreprise est réputée pour la qualité de ses produits et son engagement environnemental authentique.</p>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">1.4 Portée du projet</h3>
+                <div class="content-block">
+                    <div class="highlight">
+                        <p><strong>Inclusions :</strong></p>
+                        <ul>
+                            <li>Conception et développement d'un site e-commerce pour la vente de vêtements</li>
+                            <li>Interface administrateur pour la gestion des produits et des commandes</li>
+                            <li>Intégration des moyens de paiement et des options de livraison</li>
+                            <li>Mise en place d'un blog pour le contenu de marque</li>
+                            <li>Système d'authentification et gestion des comptes clients</li>
+                        </ul>
+                        
+                        <p><strong>Exclusions :</strong></p>
+                        <ul>
+                            <li>Création de contenu (textes, photos, vidéos)</li>
+                            <li>Stratégie marketing et référencement</li>
+                            <li>Mise en place d'un système CRM</li>
+                            <li>Développement d'applications mobiles natives</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Objectifs du projet -->
+        <div class="section">
+            <h2 class="section-title">2. Objectifs du projet</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">2.1 Objectifs fonctionnels</h3>
+                <div class="content-block">
+                    <p>Le site e-commerce devra permettre de :</p>
+                    <ul>
+                        <li>Présenter la marque, ses valeurs et son engagement écologique</li>
+                        <li>Afficher un catalogue de produits organisé par catégories (femmes, hommes, enfants)</li>
+                        <li>Permettre la recherche et le filtrage des produits selon différents critères</li>
+                        <li>Gérer un panier d'achat et un processus de commande simplifié</li>
+                        <li>Proposer différents moyens de paiement sécurisés</li>
+                        <li>Gérer les comptes clients et leur historique d'achats</li>
+                        <li>Administrer facilement les produits, stocks, commandes et clients</li>
+                        <li>Intégrer un blog pour publier du contenu de marque</li>
+                        <li>Offrir un système de notation et d'avis sur les produits</li>
+                        <li>Fournir des statistiques de vente et d'analyse du comportement client</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">2.2 Objectifs non-fonctionnels</h3>
+                <div class="content-block">
+                    <p>La plateforme devra répondre aux exigences suivantes :</p>
+                    <ul>
+                        <li><strong>Performance :</strong> Temps de chargement des pages inférieur à 2 secondes</li>
+                        <li><strong>Sécurité :</strong> Protection des données personnelles et des transactions</li>
+                        <li><strong>Ergonomie :</strong> Interface intuitive et responsive pour tous les appareils</li>
+                        <li><strong>Accessibilité :</strong> Conformité aux normes WCAG 2.1 niveau AA</li>
+                        <li><strong>Scalabilité :</strong> Capacité à gérer jusqu'à 10 000 utilisateurs simultanés</li>
+                        <li><strong>SEO :</strong> Structure optimisée pour le référencement naturel</li>
+                        <li><strong>Disponibilité :</strong> Taux de disponibilité de 99,9%</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Description du besoin -->
+        <div class="section">
+            <h2 class="section-title">3. Description du besoin</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">3.1 Problèmes actuels ou opportunités</h3>
+                <div class="content-block">
+                    <p>Actuellement, EcoStyle fait face à plusieurs défis :</p>
+                    <ul>
+                        <li>Dépendance vis-à-vis des plateformes tierces qui prélèvent des commissions importantes (jusqu'à 15% du prix de vente)</li>
+                        <li>Difficulté à contrôler l'expérience client de bout en bout</li>
+                        <li>Impossibilité de communiquer efficacement sur les valeurs de la marque via les plateformes généralistes</li>
+                        <li>Absence de données clients directes pour le marketing et la fidélisation</li>
+                        <li>Manque de visibilité sur les comportements d'achat des utilisateurs</li>
+                    </ul>
+                    
+                    <p>Ces problèmes représentent une opportunité de créer une plateforme propriétaire qui permettra de :</p>
+                    <ul>
+                        <li>Augmenter les marges en éliminant les commissions des plateformes tierces</li>
+                        <li>Créer une expérience client cohérente avec l'image de marque</li>
+                        <li>Collecter des données clients précieuses pour le marketing</li>
+                        <li>Fidéliser la clientèle via des fonctionnalités spécifiques</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">3.2 Utilisateurs cibles</h3>
+                <div class="content-block">
+                    <p>La plateforme s'adresse principalement aux profils suivants :</p>
+                    
+                    <p><strong>Clients finaux :</strong></p>
+                    <ul>
+                        <li><strong>Éco-consommateurs engagés :</strong> 25-45 ans, CSP+, sensibles aux enjeux environnementaux, prêts à investir dans des vêtements de qualité et durables</li>
+                        <li><strong>Fashion addicts responsables :</strong> 20-35 ans, suiveurs de tendances mais soucieux de l'impact de leurs achats</li>
+                        <li><strong>Parents éco-conscients :</strong> 30-45 ans, recherchant des vêtements sains et durables pour leurs enfants</li>
+                    </ul>
+                    
+                    <p><strong>Utilisateurs internes :</strong></p>
+                    <ul>
+                        <li><strong>Administrateurs :</strong> Équipe e-commerce et marketing gérant les produits, commandes et contenus</li>
+                        <li><strong>Service client :</strong> Équipe en charge du suivi des commandes et des retours</li>
+                        <li><strong>Direction :</strong> Accès aux tableaux de bord et statistiques</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">3.3 Besoins exprimés par le client</h3>
+                <div class="content-block">
+                    <table>
+                        <tr>
+                            <th>Besoin</th>
+                            <th>Priorité</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>Design distinctif</td>
+                            <td>Haute</td>
+                            <td>Interface reflétant l'esthétique naturelle et éco-responsable de la marque</td>
+                        </tr>
+                        <tr>
+                            <td>Mise en avant des matériaux</td>
+                            <td>Haute</td>
+                            <td>Possibilité de détailler l'origine et les caractéristiques des matériaux utilisés</td>
+                        </tr>
+                        <tr>
+                            <td>Processus d'achat simplifié</td>
+                            <td>Haute</td>
+                            <td>Minimiser les étapes entre la sélection d'un produit et la finalisation de l'achat</td>
+                        </tr>
+                        <tr>
+                            <td>Suivi d'impact écologique</td>
+                            <td>Moyenne</td>
+                            <td>Visualisation de l'impact positif des achats (CO2 économisé, eau préservée...)</td>
+                        </tr>
+                        <tr>
+                            <td>Programme de fidélité</td>
+                            <td>Moyenne</td>
+                            <td>Système de points et avantages pour les clients réguliers</td>
+                        </tr>
+                        <tr>
+                            <td>Multilingue</td>
+                            <td>Basse</td>
+                            <td>Support du français, anglais et allemand</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Périmètre fonctionnel -->
+        <div class="section">
+            <h2 class="section-title">4. Périmètre fonctionnel</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">4.1 Authentification / inscription</h3>
+                <div class="content-block">
+                    <p>Le système d'authentification comprendra :</p>
+                    <ul>
+                        <li>Inscription par email avec validation du compte</li>
+                        <li>Connexion via identifiants classiques (email/mot de passe)</li>
+                        <li>Authentification sociale (Google, Facebook, Apple)</li>
+                        <li>Système de récupération de mot de passe</li>
+                        <li>Option d'achat en tant qu'invité (sans création de compte)</li>
+                        <li>Authentification à deux facteurs pour l'interface d'administration</li>
+                        <li>Gestion des rôles et permissions (client, admin, éditeur de contenu...)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">4.2 Tableau de bord</h3>
+                <div class="content-block">
+                    <p><strong>Pour les clients :</strong></p>
+                    <ul>
+                        <li>Vue d'ensemble des commandes passées et leur statut</li>
+                        <li>Historique des achats avec possibilité de récommander</li>
+                        <li>Gestion des informations personnelles et adresses</li>
+                        <li>Suivi des points de fidélité</li>
+                        <li>Liste de souhaits et produits favoris</li>
+                    </ul>
+                    
+                    <p><strong>Pour les administrateurs :</strong></p>
+                    <ul>
+                        <li>Tableau de bord avec KPIs (ventes, visites, taux de conversion)</li>
+                        <li>Gestion des commandes et leur statut</li>
+                        <li>Alertes de stock</li>
+                        <li>Vue d'ensemble des utilisateurs et leur activité</li>
+                        <li>Statistiques de vente par période, catégorie, région</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">4.3 Gestion des utilisateurs</h3>
+                <div class="content-block">
+                    <p>La plateforme permettra :</p>
+                    <ul>
+                        <li>Création, modification et suppression des comptes utilisateurs</li>
+                        <li>Attribution et gestion des rôles et permissions</li>
+                        <li>Gestion des informations personnelles (profil, adresses, préférences)</li>
+                        <li>Historique des actions des utilisateurs administrateurs</li>
+                        <li>Gestion de la confidentialité et consentements RGPD</li>
+                        <li>Export des données personnelles (droit à la portabilité)</li>
+                        <li>Anonymisation des comptes supprimés (droit à l'oubli)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">4.4 Gestion des données</h3>
+                <div class="content-block">
+                    <p>Le système inclura :</p>
+                    <ul>
+                        <li>Gestion du catalogue produits (création, modification, désactivation)</li>
+                        <li>Gestion des catégories et attributs de produits</li>
+                        <li>Gestion des stocks et alertes</li>
+                        <li>Import/export des données produits via CSV/XML</li>
+                        <li>Gestion des médias (images, vidéos) avec optimisation</li>
+                        <li>Sauvegarde automatique des données</li>
+                        <li>Historisation des modifications</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">4.5 Notifications</h3>
+                <div class="content-block">
+                    <p>Le système de notification comprendra :</p>
+                    <ul>
+                        <li>Emails transactionnels (confirmation d'inscription, de commande, expédition...)</li>
+                        <li>Notifications push (navigateur) pour les nouveautés et promotions</li>
+                        <li>Alertes administrateurs (stocks bas, nouvelles commandes, avis clients...)</li>
+                        <li>Notifications in-app pour les utilisateurs connectés</li>
+                        <li>Système de préférences permettant aux utilisateurs de gérer leurs notifications</li>
+                        <li>Notifications SMS optionnelles pour les mises à jour importantes des commandes</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">4.6 Autres fonctionnalités</h3>
+                <div class="content-block">
+                    <ul>
+                        <li><strong>Blog intégré :</strong> Publication d'articles sur l'éco-responsabilité, les matériaux, les processus de fabrication</li>
+                        <li><strong>Système d'avis :</strong> Recueil et affichage des avis clients sur les produits</li>
+                        <li><strong>Recherche avancée :</strong> Filtrage multicritères, recherche par tags, suggestions intelligentes</li>
+                        <li><strong>Partage social :</strong> Partage des produits sur les réseaux sociaux</li>
+                        <li><strong>Calculateur d'impact :</strong> Visualisation de l'impact écologique positif des achats</li>
+                        <li><strong>FAQ dynamique :</strong> Base de connaissances pour les questions fréquentes</li>
+                        <li><strong>Chat support :</strong> Assistance en ligne pour les clients</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contraintes techniques -->
+        <div class="section">
+            <h2 class="section-title">5. Contraintes techniques</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">5.1 Langages ou frameworks imposés</h3>
+                <div class="content-block">
+                    <p>La solution technique devra s'appuyer sur :</p>
+                    <ul>
+                        <li><strong>Frontend :</strong> React.js avec Next.js pour le rendu côté serveur et l'optimisation SEO</li>
+                        <li><strong>Backend :</strong> Node.js avec Express ou NestJS</li>
+                        <li><strong>Styles :</strong> Tailwind CSS pour l'interface utilisateur</li>
+                        <li><strong>API :</strong> REST ou GraphQL pour les communications client-serveur</li>
+                        <li><strong>Animations :</strong> Framer Motion pour les transitions et animations</li>
+                    </ul>
+                    
+                    <p>Ces choix technologiques sont préférés pour leur performance, leur flexibilité et la disponibilité des compétences dans l'équipe de maintenance future.</p>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">5.2 Base de données</h3>
+                <div class="content-block">
+                    <p>La solution utilisera :</p>
+                    <ul>
+                        <li>MongoDB comme base de données principale pour sa flexibilité avec les données produits</li>
+                        <li>Redis pour la mise en cache et les sessions utilisateurs</li>
+                        <li>Elasticsearch pour la recherche avancée de produits</li>
+                    </ul>
+                    
+                    <p>La base de données devra être optimisée pour :</p>
+                    <ul>
+                        <li>Haute disponibilité (réplication)</li>
+                        <li>Scalabilité horizontale</li>
+                        <li>Sauvegardes automatiques quotidiennes</li>
+                        <li>Récupération rapide en cas d'incident</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">5.3 Hébergement</h3>
+                <div class="content-block">
+                    <p>L'infrastructure sera déployée sur AWS avec :</p>
+                    <ul>
+                        <li>EC2 pour les serveurs d'application</li>
+                        <li>S3 pour le stockage des médias</li>
+                        <li>CloudFront comme CDN pour la distribution des assets statiques</li>
+                        <li>RDS pour les bases de données relationnelles secondaires</li>
+                        <li>ElastiCache pour Redis</li>
+                        <li>Load Balancer pour la répartition de charge</li>
+                    </ul>
+                    
+                    <p>L'architecture sera containerisée avec Docker et orchestrée avec Kubernetes pour faciliter le déploiement, la scalabilité et la maintenance.</p>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">5.4 Sécurité</h3>
+                <div class="content-block">
+                    <p>La plateforme devra implémenter :</p>
+                    <ul>
+                        <li>HTTPS obligatoire sur l'ensemble du site</li>
+                        <li>Protection contre les attaques courantes (XSS, CSRF, injection SQL)</li>
+                        <li>Chiffrement des données sensibles en base de données</li>
+                        <li>Conformité RGPD complète (consentement, droit à l'oubli, portabilité)</li>
+                        <li>Système de détection d'intrusion</li>
+                        <li>Authentification sécurisée avec hachage des mots de passe</li>
+                        <li>Protection contre les attaques par force brute</li>
+                        <li>Certification PCI DSS pour le traitement des paiements</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">5.5 Compatibilité</h3>
+                <div class="content-block">
+                    <p>La plateforme devra être compatible avec :</p>
+                    <ul>
+                        <li><strong>Navigateurs :</strong> Chrome, Firefox, Safari, Edge (deux dernières versions)</li>
+                        <li><strong>Appareils :</strong> Design responsive pour desktop, tablette et mobile</li>
+                        <li><strong>Systèmes d'exploitation :</strong> Windows, macOS, iOS, Android</li>
+                        <li><strong>Intégrations tierces :</strong> Passerelles de paiement (Stripe, PayPal), transporteurs (Colissimo, DHL), ERP</li>
+                        <li><strong>Accessibilité :</strong> Conformité WCAG 2.1 niveau AA</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Planning prévisionnel -->
+        <div class="section">
+            <h2 class="section-title">6. Planning prévisionnel</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">6.1 Phases du projet</h3>
+                <div class="content-block">
+                    <table>
+                        <tr>
+                            <th>Phase</th>
+                            <th>Description</th>
+                            <th>Durée estimée</th>
+                        </tr>
+                        <tr>
+                            <td>Analyse et conception</td>
+                            <td>Analyse des besoins détaillés, wireframes, maquettes, validation de l'architecture</td>
+                            <td>4 semaines</td>
+                        </tr>
+                        <tr>
+                            <td>Développement - MVP</td>
+                            <td>Développement des fonctionnalités core (catalogue, panier, paiement, comptes)</td>
+                            <td>8 semaines</td>
+                        </tr>
+                        <tr>
+                            <td>Développement - Phase 2</td>
+                            <td>Développement des fonctionnalités secondaires (blog, avis, etc.)</td>
+                            <td>6 semaines</td>
+                        </tr>
+                        <tr>
+                            <td>Tests et recette</td>
+                            <td>Tests unitaires, d'intégration, de charge et recette client</td>
+                            <td>3 semaines</td>
+                        </tr>
+                        <tr>
+                            <td>Déploiement et formation</td>
+                            <td>Mise en production et formation des utilisateurs</td>
+                            <td>2 semaines</td>
+                        </tr>
+                        <tr>
+                            <td>Suivi et optimisations</td>
+                            <td>Corrections, ajustements et optimisations post-lancement</td>
+                            <td>4 semaines</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">6.2 Dates clés / livrables / jalons</h3>
+                <div class="content-block">
+                    <ul>
+                        <li><strong>Début du projet :</strong> 1er juin 2025</li>
+                        <li><strong>Validation des maquettes :</strong> 15 juin 2025</li>
+                        <li><strong>Livraison du MVP :</strong> 15 août 2025</li>
+                        <li><strong>Recette client :</strong> 1-15 septembre 2025</li>
+                        <li><strong>Formation des administrateurs :</strong> 20-25 septembre 2025</li>
+                        <li><strong>Mise en production :</strong> 1er octobre 2025</li>
+                        <li><strong>Fin du suivi post-lancement :</strong> 31 octobre 2025</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">6.3 Durée estimée</h3>
+                <div class="content-block">
+                    <p>La durée totale du projet est estimée à <strong>5 mois</strong>, du lancement à la fin de la période de stabilisation. Ce planning inclut :</p>
+                    <ul>
+                        <li>Les périodes de validation client entre chaque phase</li>
+                        <li>Les itérations et ajustements nécessaires</li>
+                        <li>Une marge de sécurité de 15% pour gérer les imprévus</li>
+                    </ul>
+                    
+                    <p>Le planning est basé sur une équipe de développement composée de :</p>
+                    <ul>
+                        <li>1 chef de projet</li>
+                        <li>1 UX/UI designer</li>
+                        <li>2 développeurs frontend</li>
+                        <li>2 développeurs backend</li>
+                        <li>1 testeur QA</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Budget -->
+        <div class="section">
+            <h2 class="section-title">7. Budget</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">7.1 Estimation des coûts</h3>
+                <div class="content-block">
+                    <table>
+                        <tr>
+                            <th>Poste de dépense</th>
+                            <th>Détail</th>
+                            <th>Montant (HT)</th>
+                        </tr>
+                        <tr>
+                            <td>Analyse et conception</td>
+                            <td>220 heures × 85€</td>
+                            <td>18 700 €</td>
+                        </tr>
+                        <tr>
+                            <td>Développement Frontend</td>
+                            <td>560 heures × 80€</td>
+                            <td>44 800 €</td>
+                        </tr>
+                        <tr>
+                            <td>Développement Backend</td>
+                            <td>480 heures × 85€</td>
+                            <td>40 800 €</td>
+                        </tr>
+                        <tr>
+                            <td>Tests et assurance qualité</td>
+                            <td>180 heures × 75€</td>
+                            <td>13 500 €</td>
+                        </tr>
+                        <tr>
+                            <td>Gestion de projet</td>
+                            <td>160 heures × 95€</td>
+                            <td>15 200 €</td>
+                        </tr>
+                        <tr>
+                            <td>Formation et documentation</td>
+                            <td>60 heures × 85€</td>
+                            <td>5 100 €</td>
+                        </tr>
+                        <tr>
+                            <td>Hébergement et infrastructure (1ère année)</td>
+                            <td>AWS, CDN, certificats SSL</td>
+                            <td>6 000 €</td>
+                        </tr>
+                        <tr>
+                            <td>Licences et services tiers (1ère année)</td>
+                            <td>Passerelles de paiement, analytics, etc.</td>
+                            <td>3 500 €</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>TOTAL HT</strong></td>
+                            <td><strong>147 600 €</strong></td>
+                        </tr>
+                    </table>
+                    
+                    <p class="highlight">
+                        Cette estimation inclut le développement complet de la plateforme, son déploiement et la formation des utilisateurs. Elle n'inclut pas les coûts liés à la production de contenu (textes, photos, vidéos), ni les frais de marketing et de référencement.
+                    </p>
+                    
+                    <p>Les coûts récurrents annuels sont estimés à environ 12 000 € HT, incluant :</p>
+                    <ul>
+                        <li>Hébergement et infrastructure</li>
+                        <li>Maintenance corrective et évolutive (forfait 10h/mois)</li>
+                        <li>Licences et services tiers</li>
+                        <li>Support technique (horaires de bureau)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Critères de validation -->
+        <div class="section">
+            <h2 class="section-title">8. Critères de validation</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">8.1 Éléments à vérifier pour accepter le projet</h3>
+                <div class="content-block">
+                    <p>La recette du projet sera validée sur les critères suivants :</p>
+                    <ul>
+                        <li><strong>Fonctionnalités :</strong> Toutes les fonctionnalités décrites dans le périmètre fonctionnel doivent être opérationnelles</li>
+                        <li><strong>Performance :</strong> Les temps de chargement doivent respecter les seuils définis (< 2s pour la page d'accueil, < 3s pour les pages produits)</li>
+                        <li><strong>Compatibilité :</strong> Le site doit fonctionner correctement sur tous les navigateurs et appareils spécifiés</li>
+                        <li><strong>Sécurité :</strong> Validation par un audit de sécurité indépendant</li>
+                        <li><strong>Accessibilité :</strong> Conformité aux normes WCAG 2.1 niveau AA</li>
+                        <li><strong>Intégrations :</strong> Les systèmes de paiement et logistiques doivent fonctionner correctement</li>
+                        <li><strong>Ergonomie :</strong> Validation par un panel test d'utilisateurs (taux de satisfaction > 85%)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">8.2 Scénarios de test, critères d'acceptation</h3>
+                <div class="content-block">
+                    <p>Les scénarios de test suivants seront utilisés pour valider le projet :</p>
+                    
+                    <p><strong>Parcours client :</strong></p>
+                    <ol>
+                        <li>Création d'un compte utilisateur</li>
+                        <li>Navigation et recherche dans le catalogue</li>
+                        <li>Ajout de produits au panier</li>
+                        <li>Processus de commande complet jusqu'au paiement</li>
+                        <li>Suivi de commande depuis le tableau de bord</li>
+                        <li>Modification des informations personnelles</li>
+                    </ol>
+                    
+                    <p><strong>Parcours administrateur :</strong></p>
+                    <ol>
+                        <li>Ajout d'un nouveau produit avec ses variantes</li>
+                        <li>Modification des stocks</li>
+                        <li>Traitement d'une commande (validation, préparation, expédition)</li>
+                        <li>Création d'une promotion</li>
+                        <li>Publication d'un article de blog</li>
+                        <li>Consultation des statistiques et rapports</li>
+                    </ol>
+                    
+                    <p>Chaque scénario sera documenté avec :</p>
+                    <ul>
+                        <li>Les étapes précises à suivre</li>
+                        <li>Les résultats attendus</li>
+                        <li>Les critères de succès</li>
+                        <li>Les captures d'écran des résultats</li>
+                    </ul>
+                    
+                    <p>Un document de recette détaillé sera fourni et devra être validé par le client pour considérer le projet comme accepté.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Annexes -->
+        <div class="section">
+            <h2 class="section-title">9. Annexes</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">9.1 Glossaire</h3>
+                <div class="content-block">
+                    <table>
+                        <tr>
+                            <th>Terme</th>
+                            <th>Définition</th>
+                        </tr>
+                        <tr>
+                            <td>API</td>
+                            <td>Application Programming Interface - Interface permettant à des applications de communiquer entre elles</td>
+                        </tr>
+                        <tr>
+                            <td>CDN</td>
+                            <td>Content Delivery Network - Réseau de distribution de contenu permettant d'accélérer le chargement des pages web</td>
+                        </tr>
+                        <tr>
+                            <td>KPI</td>
+                            <td>Key Performance Indicator - Indicateur clé de performance utilisé pour mesurer l'efficacité d'une action</td>
+                        </tr>
+                        <tr>
+                            <td>MVP</td>
+                            <td>Minimum Viable Product - Version minimale d'un produit contenant les fonctionnalités essentielles</td>
+                        </tr>
+                        <tr>
+                            <td>PCI DSS</td>
+                            <td>Payment Card Industry Data Security Standard - Norme de sécurité pour le traitement des données de cartes bancaires</td>
+                        </tr>
+                        <tr>
+                            <td>RGPD</td>
+                            <td>Règlement Général sur la Protection des Données - Règlement européen sur la protection des données personnelles</td>
+                        </tr>
+                        <tr>
+                            <td>SEO</td>
+                            <td>Search Engine Optimization - Optimisation pour les moteurs de recherche</td>
+                        </tr>
+                        <tr>
+                            <td>WCAG</td>
+                            <td>Web Content Accessibility Guidelines - Recommandations pour l'accessibilité des contenus web</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">9.2 Documents techniques complémentaires</h3>
+                <div class="content-block">
+                    <p>Les documents suivants seront fournis en complément de ce cahier des charges :</p>
+                    <ul>
+                        <li>Charte graphique complète</li>
+                        <li>Wireframes et maquettes des principales pages</li>
+                        <li>Schéma de la base de données</li>
+                        <li>Architecture technique détaillée</li>
+                        <li>Plan de test</li>
+                        <li>Manuel d'utilisation des interfaces d'administration</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">9.3 Références / liens utiles</h3>
+                <div class="content-block">
+                    <ul>
+                        <li><a href="#">Site actuel d'EcoStyle</a></li>
+                        <li><a href="#">Benchmark des concurrents</a></li>
+                        <li><a href="#">Documentation React et Next.js</a></li>
+                        <li><a href="#">Documentation API Stripe</a></li>
+                        <li><a href="#">Guidelines d'accessibilité WCAG 2.1</a></li>
+                        <li><a href="#">Ressources sur les bonnes pratiques e-commerce</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-container">
+                <div class="footer-left">
+                    <p class="confidentiality">CONFIDENTIEL</p>
+                </div>
+                <div class="footer-center">
+                    <p class="company-name">EcoStyle SAS - Cahier des Charges</p>
+                </div>
+                <div class="footer-right">
+                    <p class="page-number">Page <span class="page-num"></span> sur <span class="total-pages"></span></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <hr>
+                <p class="copyright">© EcoStyle SAS 2025 - Tous droits réservés. Document généré le <span id="doc-generation-date"></span></p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="cdc-script.js"></script>
+    <script>
+        // Your API key integration
+        const API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
+        
+        // Function to process the CDC data from the form
+        function processCDCData(data) {
+            console.log('Processing CDC data:', data);
+            
+            // Update page de garde / cover page
+            if (data.pageDeGarde) {
+                document.querySelector('.project-name').textContent = data.pageDeGarde.nomProjet || 'Titre du projet';
+                document.querySelector('.client-name').textContent = 'Pour : ' + (data.pageDeGarde.nomClient || 'Nom du client');
+                
+                // Update meta information
+                const metaValues = document.querySelectorAll('.meta-value');
+                metaValues[0].textContent = data.pageDeGarde.versionDocument || '1.0';
+                metaValues[1].textContent = data.pageDeGarde.date || new Date().toLocaleDateString('fr-FR');
+                
+                // Format redacteurs (might be string or array)
+                let redacteursText = '';
+                if (data.pageDeGarde.redacteurs) {
+                    if (Array.isArray(data.pageDeGarde.redacteurs)) {
+                        redacteursText = data.pageDeGarde.redacteurs.join(', ');
+                    } else {
+                        redacteursText = data.pageDeGarde.redacteurs;
+                    }
+                }
+                metaValues[2].textContent = redacteursText || 'Prénom Nom';
+            }
+            
+            // Update introduction section
+            if (data.introduction) {
+                updateSectionContent('1.1 Contexte du projet', data.introduction.contexteProjet);
+                updateSectionContent('1.2 Objectif global', data.introduction.objectifGlobal);
+                updateSectionContent('1.3 Présentation du commanditaire', data.introduction.presentationCommanditaire);
+                updateSectionContent('1.4 Portée du projet', data.introduction.porteeProjet);
+            }
+            
+            // Update objectives section
+            if (data.objectifsProjet) {
+                updateSectionContent('2.1 Objectifs fonctionnels', data.objectifsProjet.objectifsFonctionnels);
+                updateSectionContent('2.2 Objectifs non-fonctionnels', data.objectifsProjet.objectifsNonFonctionnels);
+            }
+            
+            // Update needs description section
+            if (data.descriptionBesoin) {
+                updateSectionContent('3.1 Problèmes actuels ou opportunités', data.descriptionBesoin.problemesActuels);
+                updateSectionContent('3.2 Utilisateurs cibles', data.descriptionBesoin.utilisateursCibles);
+                updateSectionContent('3.3 Besoins exprimés par le client', data.descriptionBesoin.besoinsExprimes);
+            }
+            
+            // Update functional scope section
+            if (data.perimetreFonctionnel) {
+                updateSectionContent('4.1 Authentification / inscription', data.perimetreFonctionnel.authentification);
+                updateSectionContent('4.2 Tableau de bord', data.perimetreFonctionnel.tableauBord);
+                updateSectionContent('4.3 Gestion des utilisateurs', data.perimetreFonctionnel.gestionUtilisateurs);
+                updateSectionContent('4.4 Gestion des données', data.perimetreFonctionnel.gestionDonnees);
+                updateSectionContent('4.5 Notifications', data.perimetreFonctionnel.notifications);
+                updateSectionContent('4.6 Autres fonctionnalités', data.perimetreFonctionnel.autresFonctionnalites);
+            }
+            
+            // Update technical constraints section
+            if (data.contraintesTechniques) {
+                updateSectionContent('5.1 Langages ou frameworks imposés', data.contraintesTechniques.langagesFrameworks);
+                updateSectionContent('5.2 Base de données', data.contraintesTechniques.baseDonnees);
+                updateSectionContent('5.3 Hébergement', data.contraintesTechniques.hebergement);
+                updateSectionContent('5.4 Sécurité', data.contraintesTechniques.securite);
+                updateSectionContent('5.5 Compatibilité', data.contraintesTechniques.compatibilite);
+            }
+            
+            // Update planning section
+            if (data.planningPrevisionnel) {
+                updateSectionContent('6.1 Phases du projet', data.planningPrevisionnel.phasesProjet);
+                updateSectionContent('6.2 Dates clés / livrables / jalons', data.planningPrevisionnel.datesCles);
+                updateSectionContent('6.3 Durée estimée', data.planningPrevisionnel.dureeEstimee);
+            }
+            
+            // Update budget section
+            if (data.budget) {
+                updateSectionContent('7.1 Estimation des coûts', data.budget.estimationCouts);
+            }
+            
+            // Update validation criteria section
+            if (data.criteresValidation) {
+                updateSectionContent('8.1 Éléments à vérifier pour accepter le projet', data.criteresValidation.elementsVerifier);
+                updateSectionContent('8.2 Scénarios de test, critères d\'acceptation', data.criteresValidation.scenariosTest);
+            }
+            
+            // Update annexes section
+            if (data.annexes) {
+                updateSectionContent('9.1 Glossaire', data.annexes.glossaire);
+                updateSectionContent('9.2 Documents techniques complémentaires', data.annexes.documentsComplementaires);
+                updateSectionContent('9.3 Références / liens utiles', data.annexes.referencesUtiles);
+            }
+            
+            // Update dates
+            const currentDate = new Date().toLocaleDateString('fr-FR');
+            document.getElementById('current-date').textContent = currentDate;
+            document.getElementById('doc-date').textContent = data.pageDeGarde?.date || currentDate;
+            document.getElementById('doc-generation-date').textContent = currentDate;
+            
+            // Update footer copyright year
+            const copyright = document.querySelector('.copyright');
+            if (copyright) {
+                copyright.innerHTML = copyright.innerHTML.replace(/\d{4}/, new Date().getFullYear());
+            }
+            
+            // Add numbering to pages for the PDF
+            addPageNumbers();
+        }
+        
+        // Helper function to update section content
+        function updateSectionContent(subsectionTitle, content) {
+            if (!content) return;
+            
+            // Find the subsection by its title
+            const subsections = document.querySelectorAll('.subsection-title');
+            for (const subsection of subsections) {
+                if (subsection.textContent.trim() === subsectionTitle) {
+                    // Find the content block within this subsection
+                    const contentBlock = subsection.parentElement.querySelector('.content-block');
+                    if (contentBlock) {
+                        // Check if the content is HTML or plain text
+                        if (/<[a-z][\s\S]*>/i.test(content)) {
+                            // It's HTML
+                            contentBlock.innerHTML = content;
+                        } else {
+                            // It's plain text - convert line breaks and preserve formatting
+                            contentBlock.innerHTML = '';
+                            const paragraph = document.createElement('p');
+                            paragraph.textContent = content;
+                            contentBlock.appendChild(paragraph);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        
+        // Add page numbering
+        function addPageNumbers() {
+            // This will be executed when printing or after layout is complete
+            const totalPages = document.querySelectorAll('.section').length + 2; // +2 for cover and TOC
+            const pageNumElements = document.querySelectorAll('.page-num');
+            const totalPagesElements = document.querySelectorAll('.total-pages');
+            
+            // Set total pages count
+            totalPagesElements.forEach(element => {
+                element.textContent = totalPages;
+            });
+            
+            // Page numbers will be added by CSS counters during printing
+        }
+        
+        // Function to load data from API or local storage
+        async function loadCDCData() {
+            console.log('Loading CDC data...');
+            
+            try {
+                // Check if data is available in localStorage (for preview/testing)
+                const localData = localStorage.getItem('cdcFormData');
+                if (localData) {
+                    processCDCData(JSON.parse(localData));
+                    return;
+                }
+                
+                // Get the CDC ID from URL query parameter if available
+                const urlParams = new URLSearchParams(window.location.search);
+                const cdcId = urlParams.get('id');
+                
+                if (!cdcId) {
+                    console.warn('No CDC ID provided in URL. Using sample data.');
+                    // Use sample data for preview
+                    processCDCData(getSampleData());
+                    return;
+                }
+                
+                // Fetch from API
+                const apiUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080/api/cdc';
+                const response = await fetch(`${apiUrl}/${cdcId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API request failed with status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                processCDCData(data);
+                
+            } catch (error) {
+                console.error('Error loading CDC data:', error);
+                // Use sample data on error
+                processCDCData(getSampleData());
+            }
+        }
+        
+        // Sample data for testing/preview
+        function getSampleData() {
+            return {
+                pageDeGarde: {
+                    nomProjet: "Plateforme E-commerce EcoStyle",
+                    nomClient: "EcoStyle SAS",
+                    date: new Date().toLocaleDateString('fr-FR'),
+                    versionDocument: "1.0",
+                    redacteurs: "Marie Dupont, Pierre Martin"
+                },
+                introduction: {
+                    contexteProjet: "Description du contexte du projet...",
+                    objectifGlobal: "Description de l'objectif global...",
+                    presentationCommanditaire: "Présentation du commanditaire...",
+                    porteeProjet: "Portée du projet..."
+                },
+                objectifsProjet: {
+                    objectifsFonctionnels: "Objectifs fonctionnels du projet...",
+                    objectifsNonFonctionnels: "Objectifs non fonctionnels du projet..."
+                },
+                // Sample data for other sections would follow the same pattern
+            };
+        }
+        
+        // Initialize when the document is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize date fields
+            document.getElementById('current-date').textContent = new Date().toLocaleDateString('fr-FR');
+            document.getElementById('doc-date').textContent = new Date().toLocaleDateString('fr-FR');
+            document.getElementById('doc-generation-date').textContent = new Date().toLocaleDateString('fr-FR');
+            
+            // Set up the download PDF button
+            const downloadPdfButton = document.getElementById('downloadPdfButton');
+            if (downloadPdfButton) {
+                downloadPdfButton.addEventListener('click', function() {
+                    window.print();
+                });
+            }
+            
+            // Set up the edit button
+            const editButton = document.getElementById('editButton');
+            if (editButton) {
+                editButton.addEventListener('click', function() {
+                    // Navigate back to the form or toggle edit mode
+                    window.history.back();
+                });
+            }
+            
+            // Load CDC data
+            loadCDCData();
+        });
+    </script>
+</body>
+</html>

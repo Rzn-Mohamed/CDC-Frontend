@@ -1,0 +1,562 @@
+/* Styles généraux pour le cahier des charges */
+:root {
+    --primary-color: #1a73e8;
+    --secondary-color: #5f6368;
+    --light-color: #f8f9fa;
+    --dark-color: #202124;
+    --border-color: #dadce0;
+    --font-main: 'Roboto', 'Arial', sans-serif;
+    --font-title: 'Google Sans', 'Arial', sans-serif;
+    --page-margin: 2.54cm;
+    --footer-height: 1.5cm;
+    --background-color: #e8eaed; /* Couleur de fond principale */
+    --paper-spacing: 20mm; /* Espacement entre les feuilles */
+}
+
+body {
+    font-family: var(--font-main);
+    line-height: 1.5;
+    color: #202124;
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+    font-size: 11pt;
+}
+
+/* Contrôles d'édition (non imprimables) */
+.no-print {
+    margin: 20px;
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    body {
+        background-color: white;
+    }
+}
+
+.controls {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 15px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-family: 'Google Sans', 'Arial', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.btn:hover {
+    background-color: #1558c4;
+}
+
+.btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.btn-secondary {
+    background-color: white;
+    color: var(--primary-color);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: #f6f9fe;
+}
+
+/* Document principal */
+.cdc-document {
+    width: 210mm;
+    margin: 30px auto;
+    padding: 0;
+    background-color: var(--background-color); /* Utilise la même couleur que le fond principal */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: visible; /* Changé de 'hidden' à 'visible' pour permettre aux ombres de déborder */
+}
+
+@media print {
+    .cdc-document {
+        width: 100%;
+        margin: 0;
+        box-shadow: none;
+        background-color: white;
+    }
+}
+
+/* Date de génération */
+.generate-date {
+    text-align: right;
+    font-size: 9pt;
+    color: var(--secondary-color);
+    margin: var(--page-margin) var(--page-margin) 0;
+}
+
+/* Page de garde */
+.cover-page {
+    margin: 0;
+    padding: var(--page-margin);
+    page-break-after: always;
+    min-height: calc(297mm - var(--page-margin) * 2);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.cover-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 80px;
+}
+
+.logo-placeholder {
+    width: 180px;
+    height: 90px;
+    border: 2px dashed var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--secondary-color);
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.logo-placeholder img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.upload-prompt {
+    text-align: center;
+    padding: 10px;
+}
+
+.cover-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 0;
+}
+
+.cover-title {
+    font-family: var(--font-title);
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--primary-color);
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.project-name {
+    font-family: var(--font-title);
+    font-size: 30px;
+    margin-bottom: 40px;
+    font-weight: 400;
+    color: var(--dark-color);
+}
+
+.client-name {
+    font-size: 20px;
+    font-weight: 400;
+    margin-top: 20px;
+    color: var(--secondary-color);
+}
+
+.document-meta {
+    margin-top: auto;
+    border-top: 1px solid var(--border-color);
+    padding-top: 30px;
+}
+
+.meta-item {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.meta-label {
+    font-weight: 500;
+    width: 150px;
+    color: var(--secondary-color);
+}
+
+.meta-value {
+    flex-grow: 1;
+}
+
+.cover-footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 10px;
+    color: var(--secondary-color);
+}
+
+/* Table des matières */
+.toc {
+    padding: var(--page-margin);
+    margin-bottom: 0;
+    page-break-after: always;
+}
+
+.toc-title {
+    font-family: var(--font-title);
+    font-size: 24px;
+    color: var(--primary-color);
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.toc-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.toc-item {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: baseline;
+    font-size: 12pt;
+}
+
+.toc-item-number {
+    width: 30px;
+    flex-shrink: 0;
+}
+
+.toc-item-title {
+    flex-grow: 1;
+}
+
+.toc-item-dots {
+    flex-grow: 1;
+    margin: 0 5px;
+    border-bottom: 1px dotted var(--border-color);
+    height: 1px;
+    position: relative;
+    top: -4px;
+}
+
+.toc-item-page {
+    flex-shrink: 0;
+    text-align: right;
+    font-weight: 500;
+}
+
+/* Sections et sous-sections */
+.section {
+    padding: var(--page-margin);
+    padding-bottom: calc(var(--page-margin) - var(--footer-height));
+    margin-bottom: 0;
+    page-break-after: always;
+    position: relative;
+    min-height: calc(297mm - var(--page-margin) * 2 - var(--footer-height)); /* Minimum height of A4 page minus margins */
+}
+
+.section:last-of-type {
+    page-break-after: auto;
+}
+
+/* Visual page break indicator (visible only on screen) */
+@media screen {
+    /* Styles for the container to ensure background shows through */
+    .cdc-document {
+        background-color: var(--background-color);
+        padding-top: 0;
+        padding-bottom: var(--paper-spacing);
+    }
+    
+    /* Style for the cover page */
+    .cover-page {
+        background-color: white;
+        box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.1);
+        border-radius: 2px;
+        margin-bottom: var(--paper-spacing);
+    }
+    
+    /* Style for the table of contents */
+    .toc {
+        background-color: white;
+        box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.1);
+        border-radius: 2px;
+        margin-bottom: var(--paper-spacing);
+    }
+    
+    /* Style for each section to look like a separate sheet of paper */
+    .section {
+        background-color: white;
+        border-radius: 2px;
+        box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.1);
+        margin-bottom: var(--paper-spacing);
+    }
+
+    /* Remove dotted line and content */
+    .section:after {
+        content: none;
+    }
+}
+
+/* Hide page break indicators when printing */
+@media print {
+    .section:after {
+        display: none;
+    }
+    
+    /* Enforce page breaks for major elements */
+    .cover-page, 
+    .toc, 
+    .section {
+        page-break-after: always;
+    }
+    
+    .section:last-of-type {
+        page-break-after: auto;
+    }
+    
+    /* Ensure content doesn't break across pages inappropriately */
+    .subsection {
+        page-break-inside: avoid;
+    }
+    
+    .highlight,
+    table {
+        page-break-inside: avoid;
+    }
+    
+    /* Ensure headings don't appear at the bottom of pages */
+    h2, h3 {
+        page-break-after: avoid;
+    }
+    
+    /* Ensure that images don't break across pages */
+    img {
+        page-break-inside: avoid;
+    }
+}
+
+.section-title {
+    font-family: var(--font-title);
+    font-size: 20pt;
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--primary-color);
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+.subsection {
+    margin-bottom: 30px;
+}
+
+.subsection-title {
+    font-family: var(--font-title);
+    font-size: 14pt;
+    color: var(--dark-color);
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.content-block {
+    margin-bottom: 20px;
+}
+
+/* Contenu riche */
+.content-block ul, 
+.content-block ol {
+    padding-left: 25px;
+    margin-bottom: 15px;
+}
+
+.content-block li {
+    margin-bottom: 5px;
+}
+
+.content-block p {
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+.content-block strong {
+    font-weight: 500;
+}
+
+.highlight {
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 4px;
+    border-left: 4px solid var(--primary-color);
+    margin-bottom: 20px;
+}
+
+/* Tableaux */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 10pt;
+}
+
+th, td {
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f1f3f4;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* Footer */
+.footer {
+    height: var(--footer-height);
+    position: relative;
+    margin-top: 0;
+    font-size: 9pt;
+    color: var(--secondary-color);
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--page-margin);
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+    width: 33.33%;
+}
+
+.footer-left {
+    text-align: left;
+}
+
+.footer-center {
+    text-align: center;
+}
+
+.footer-right {
+    text-align: right;
+}
+
+.confidentiality {
+    font-weight: 500;
+    color: #d93025;
+}
+
+.company-name {
+    font-style: italic;
+}
+
+.page-number {
+    font-weight: 500;
+}
+
+.footer-bottom {
+    padding: 0 var(--page-margin);
+}
+
+.footer-bottom hr {
+    border: none;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 5px 0;
+}
+
+.copyright {
+    text-align: center;
+    font-size: 8pt;
+    margin-top: 5px;
+}
+
+/* Styles d'impression */
+@media print {
+    body {
+        background: white;
+    }
+    
+    .cdc-document {
+        box-shadow: none;
+    }
+    
+    /* Force les sauts de page */
+    .cover-page,
+    .toc {
+        page-break-after: always;
+    }
+    
+    .section {
+        page-break-after: always;
+    }
+    
+    .section:last-of-type {
+        page-break-after: auto;
+    }
+    
+    /* Évite les sauts de page à l'intérieur des sections */
+    .subsection {
+        page-break-inside: avoid;
+    }
+    
+    /* Évite les sauts de page après les titres */
+    .section-title,
+    .subsection-title {
+        page-break-after: avoid;
+    }
+}
+
+/* Style pour les éléments éditables */
+[contenteditable="true"] {
+    position: relative;
+}
+
+[contenteditable="true"]:hover {
+    background-color: rgba(26, 115, 232, 0.05);
+}
+
+[contenteditable="true"]:focus {
+    outline: 2px solid rgba(26, 115, 232, 0.3);
+    background-color: rgba(26, 115, 232, 0.05);
+}
+
+/* Responsivité pour écrans plus petits */
+@media screen and (max-width: 210mm) {
+    .cdc-document {
+        width: 100%;
+        margin: 0;
+        box-shadow: none;
+    }
+}

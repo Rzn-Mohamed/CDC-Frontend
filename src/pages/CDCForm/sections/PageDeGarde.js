@@ -3,6 +3,16 @@ import React from 'react';
 const PageDeGarde = ({ formData, onChange }) => {
   const data = formData.pageDeGarde;
   
+  // Fonction pour gérer les valeurs de redacteurs qui peuvent être un tableau ou une chaîne
+  const handleRedacteursChange = (e) => {
+    onChange('redacteurs', e.target.value);
+  };
+
+  // Si redacteurs est un tableau, le convertir en chaîne pour l'affichage
+  const displayRedacteurs = Array.isArray(data.redacteurs) 
+    ? data.redacteurs.join('\n') 
+    : data.redacteurs;
+  
   return (
     <div className="form-section">
       <div className="form-group">
@@ -55,8 +65,8 @@ const PageDeGarde = ({ formData, onChange }) => {
         <label className="form-label">Nom des rédacteurs ou responsables *</label>
         <textarea
           className="form-textarea"
-          value={data.redacteurs}
-          onChange={(e) => onChange('redacteurs', e.target.value)}
+          value={displayRedacteurs}
+          onChange={handleRedacteursChange}
           placeholder="Entrez les noms des rédacteurs ou responsables (un par ligne)"
           required
         />

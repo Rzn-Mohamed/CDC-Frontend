@@ -21,10 +21,34 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8080/
 const initGeminiModel = () => {
   const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
   
-  // Use gemini-1.5-pro instead of gemini-pro
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+  // Use gemini-2.0-flash instead of gemini-1.5-pro
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
   
   return model;
+};
+
+// Fetch all CDCs from the backend
+const fetchAllCDCs = async () => {
+  try {
+    const response = await axios.get(BACKEND_URL + "/all");
+    console.log("All CDCs successfully fetched from backend");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching CDCs from backend:", error.message);
+    throw error;
+  }
+};
+
+// Fetch a specific CDC by ID from the backend
+const fetchCDCById = async (cdcId) => {
+  try {
+    const response = await axios.get(`${BACKEND_URL}/${cdcId}`);
+    console.log(`CDC with ID ${cdcId} successfully fetched from backend`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching CDC with ID ${cdcId} from backend:`, error.message);
+    throw error;
+  }
 };
 
 // Fetch data from the backend API
@@ -59,6 +83,27 @@ const processDataWithGemini = async (data) => {
     return text;
   } catch (error) {
     console.error("Error processing data with Gemini:", error.message);
+    throw error;
+  }
+};
+
+// Function to ask questions to Gemini directly from console
+const askGemini = async (question) => {
+  try {
+    console.log(`Asking Gemini: "${question}"`);
+    const model = initGeminiModel();
+    
+    // Send the question directly to Gemini
+    const result = await model.generateContent(question);
+    const response = result.response?.text();
+    
+    console.log("\n--- Gemini Response ---");
+    console.log(response);
+    console.log("--- End of Response ---\n");
+    
+    return response;
+  } catch (error) {
+    console.error("Error communicating with Gemini:", error.message);
     throw error;
   }
 };
@@ -102,4 +147,4 @@ const main = async () => {
 main();
 
 // Export the functions for potential use in other files
-export { fetchDataFromBackend, processDataWithGemini, main };
+export { fetchDataFromBackend, processDataWithGemini, askGemini, main, initGeminiModel, fetchAllCDCs, fetchCDCById };

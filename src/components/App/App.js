@@ -6,6 +6,7 @@ import Login from '../../pages/Login/Login.js';
 import Home from '../../pages/Home/Home.js';
 import Dashboard from '../../pages/Dashboard/Dashboard.js';
 import CDCForm from '../../pages/CDCForm/CDCForm.js';
+import CDCTemplate from '../../pages/CDCTemplate/CDCTemplate.js'; // Import the new CDCTemplate component
 import Profile from '../../pages/Profile/Profile.js';
 import LandingPage from '../../pages/LandingPage/LandingPage.js';
 import { AuthProvider } from '../../context/AuthContext.js';
@@ -21,6 +22,9 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
+            
+            {/* CDC Template route */}
+            <Route path="/cdc-template" element={<CDCTemplate />} />
             
             {/* Protected routes */}
             <Route path="/home" element={
