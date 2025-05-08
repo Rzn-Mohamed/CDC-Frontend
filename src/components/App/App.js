@@ -6,9 +6,9 @@ import Login from '../../pages/Login/Login.js';
 import Home from '../../pages/Home/Home.js';
 import Dashboard from '../../pages/Dashboard/Dashboard.js';
 import CDCForm from '../../pages/CDCForm/CDCForm.js';
-import CDCTemplate from '../../pages/CDCTemplate/CDCTemplate.js'; // Import the new CDCTemplate component
 import Profile from '../../pages/Profile/Profile.js';
 import LandingPage from '../../pages/LandingPage/LandingPage.js';
+import CDCTemplate from '../CDCTemplate/CDCTemplate.js';
 import { AuthProvider } from '../../context/AuthContext.js';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
 

@@ -28,7 +28,7 @@ const CDCForm = ({ onClose }) => {
       nomProjet: '',
       nomClient: '',
       date: new Date().toISOString().split('T')[0],
-      versionDocument: '2.0 Flash',
+      versionDocument: '1.0',
       redacteurs: '',
     },
     introduction: {
@@ -127,9 +127,6 @@ const CDCForm = ({ onClose }) => {
       // Get auth token directly from the auth context
       const token = getToken();
       
-      // Ensure token always exists - this will prevent "Token non disponible" errors
-      // because our updated AuthContext.getToken() always provides a token
-      
       // Add user information to form data if available
       const enrichedFormData = {
         ...formData,
@@ -153,7 +150,7 @@ const CDCForm = ({ onClose }) => {
       localStorage.setItem('cdcFormData', JSON.stringify(enrichedFormData));
       
       // Try connecting to the backend with retry mechanism
-      let response;
+      let response = null;
       let retryCount = 0;
       const maxRetries = 3;
       
@@ -204,7 +201,6 @@ const CDCForm = ({ onClose }) => {
       // Store the CDC data in localStorage for previewing
       localStorage.setItem('cdcGeneratedData', JSON.stringify(response.data));
       
-      // IMPORTANT CHANGE: Redirect to React component instead of static HTML
       // Construct a URL to view the React template component
       const cdcPreviewUrl = `/cdc-template${response.data.id ? `?id=${response.data.id}` : ''}`;
       setGeneratedCdcUrl(cdcPreviewUrl);
@@ -212,8 +208,8 @@ const CDCForm = ({ onClose }) => {
       // Open in new tab
       window.open(cdcPreviewUrl, '_blank');
       
-      // Show success message
-      alert('Cahier des charges généré avec succès!');
+      // Show success message with regular JavaScript alert
+      window.alert('Cahier des charges généré avec succès!');
       
       // Close the modal after submitting
       if (onClose) {
@@ -228,7 +224,7 @@ const CDCForm = ({ onClose }) => {
       // Create a mock successful scenario
       localStorage.setItem('cdcFormData', JSON.stringify(formData));
       
-      // IMPORTANT CHANGE: Redirect to React component instead of static HTML
+      // Create a URL for the template
       const cdcPreviewUrl = `/cdc-template`;
       setGeneratedCdcUrl(cdcPreviewUrl);
       window.open(cdcPreviewUrl, '_blank');

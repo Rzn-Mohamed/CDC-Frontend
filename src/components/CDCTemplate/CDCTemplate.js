@@ -55,7 +55,7 @@ const CDCTemplate = () => {
         nomProjet: "Plateforme E-commerce EcoStyle",
         nomClient: "EcoStyle SAS",
         date: new Date().toLocaleDateString('fr-FR'),
-        versionDocument: "2.0 Flash",
+        versionDocument: "1.0",
         redacteurs: "Marie Dupont, Pierre Martin"
       },
       introduction: {
