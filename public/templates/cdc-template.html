@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cahier des Charges</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* A4 styling */
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 10mm auto;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-number {
+            position: absolute;
+            bottom: 10mm;
+            right: 10mm;
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .subsection-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        /* SaaS-like UI styling */
+        .saas-action-button {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            border: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2), 0 2px 4px -1px rgba(79, 70, 229, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .saas-action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px -3px rgba(79, 70, 229, 0.3), 0 4px 6px -2px rgba(79, 70, 229, 0.2);
+        }
+        
+        .saas-action-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .saas-action-button:hover::before {
+            opacity: 1;
+        }
+        
+        .saas-menu {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: top right;
+        }
+        
+        .saas-menu.hidden {
+            transform: scale(0.95);
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .saas-menu-item {
+            position: relative;
+            z-index: 1;
+            transition: all 0.2s ease;
+        }
+        
+        .saas-menu-item:hover {
+            background: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+        }
+        
+        .saas-menu-item:active {
+            transform: scale(0.98);
+        }
+        
+        .saas-section {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .saas-section:last-child {
+            border-bottom: none;
+        }
+        
+        /* Color picker styling */
+        .color-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .color-option {
+            width: 28px;
+            height: 28px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            border: 2px solid transparent;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.selected {
+            border-color: #4b5563;
+        }
+        
+        .color-option.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+        }
+        
+        .color-picker-wrapper {
+            position: relative;
+        }
+        
+        .color-picker-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+        
+        .color-preview {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .color-picker-input {
+            position: absolute;
+            opacity: 0;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        .color-picker-button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .color-picker-button:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+        
+        /* Loading indicator */
+        #loadingContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(79, 70, 229, 0.2);
+            border-radius: 50%;
+            border-top-color: #4f46e5;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .content-hidden {
+            display: none;
+        }
+        
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .a4-page {
+                box-shadow: none;
+                margin: 0;
+            }
+            .a4-page:not(:last-child) {
+                page-break-after: always;
+            }
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <!-- Loading Indicator -->
+    <div id="loadingContainer">
+        <div class="loading-spinner"></div>
+        <h3 id="loadingStatus" class="text-xl font-semibold mb-4 text-indigo-700">Chargement du cahier des charges...</h3>
+        <p id="loadingText" class="text-sm text-gray-600">Préparation de votre document...</p>
+    </div>
+    
+    <!-- Content container - hidden initially -->
+    <div id="contentContainer" class="content-hidden">
+        <!-- Fixed Action Button -->
+        <div class="fixed top-6 right-6 z-50 no-print">
+            <div class="relative">
+                <button id="actionButton" class="saas-action-button py-2.5 px-5 rounded-lg flex items-center gap-2.5 font-medium">
+                    <i class="fas fa-sliders-h"></i> 
+                    <span>Actions</span>
+                </button>
+                <div id="actionMenu" class="hidden absolute right-0 mt-2.5 w-80 rounded-xl overflow-hidden saas-menu">
+                    <div class="py-1">
+                        <div class="saas-section">
+                            <div class="px-5 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Document</div>
+                            <a href="#" onclick="window.print(); return false;" class="saas-menu-item flex items-center gap-3 px-5 py-3">
+                                <div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <i class="fas fa-print text-blue-600"></i>
+                                </div>
+                                <span>Imprimer le document</span>
+                            </a>
+                            <a href="#" onclick="downloadPDF(); return false;" class="saas-menu-item flex items-center gap-3 px-5 py-3">
+                                <div class="w-7 h-7 rounded-full bg-red-100 flex items-center justify-center">
+                                    <i class="fas fa-file-pdf text-red-600"></i>
+                                </div>
+                                <span>Télécharger en PDF</span>
+                            </a>
+                            <a href="#" class="saas-menu-item flex items-center gap-3 px-5 py-3 cursor-not-allowed text-gray-400">
+                                <div class="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center">
+                                    <i class="fas fa-save text-gray-400"></i>
+                                </div>
+                                <span>Sauvegarder (bientôt)</span>
+                            </a>
+                        </div>
+                        <div class="saas-section pt-1">
+                            <div class="px-5 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Personnalisation</div>
+                            <div class="px-5 py-3">
+                                <label class="color-picker-label">
+                                    <span>Couleur des titres</span>
+                                    <div id="currentColorPreview" class="color-preview"></div>
+                                </label>
+                                
+                                <div class="color-selector">
+                                    <div class="color-option" style="background-color: #1E40AF;" data-color="#1E40AF"></div>
+                                    <div class="color-option" style="background-color: #047857;" data-color="#047857"></div>
+                                    <div class="color-option" style="background-color: #7C3AED;" data-color="#7C3AED"></div>
+                                    <div class="color-option" style="background-color: #BE185D;" data-color="#BE185D"></div>
+                                    <div class="color-option" style="background-color: #B45309;" data-color="#B45309"></div>
+                                    <div class="color-option" style="background-color: #111827;" data-color="#111827"></div>
+                                </div>
+                                
+                                <div class="color-picker-wrapper">
+                                    <div class="color-picker-button">
+                                        <i class="fas fa-palette"></i>
+                                        <span>Couleur personnalisée</span>
+                                    </div>
+                                    <input type="color" id="titleColor" value="#1E40AF" class="color-picker-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page de Garde -->
+        <div class="a4-page flex flex-col justify-center items-center">
+            <div class="text-center">
+                <h1 class="text-5xl font-bold mb-12 section-title">Cahier des Charges</h1>
+                <div class="mt-16 mb-16">
+                    <h2 id="pageTitleProject" class="text-4xl font-bold mb-8 section-title text-gray-500 italic">[Nom du Projet]</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 text-center">
+                        <div>
+                            <p class="text-gray-600">Client:</p>
+                            <p id="pageClient" class="font-medium text-gray-500 italic">[Nom du Client]</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">Date:</p>
+                            <p id="pageDate" class="font-medium"></p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">Version:</p>
+                            <p id="pageVersion" class="font-medium text-gray-500 italic">[Numéro de Version]</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">Rédacteur(s):</p>
+                            <p id="pageAuthor" class="font-medium text-gray-500 italic">[Nom(s) du/des Rédacteur(s)]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-number">1</div>
+        </div>
+
+        <!-- Table des matières -->
+        <div class="a4-page">
+            <h2 class="section-title">Table des matières</h2>
+            <ol class="list-decimal list-inside pl-4 text-lg">
+                <li class="mb-3"><a href="#introduction" class="text-blue-600 hover:underline">Introduction</a></li>
+                <li class="mb-3"><a href="#objectifs" class="text-blue-600 hover:underline">Objectifs du projet</a></li>
+                <li class="mb-3"><a href="#description" class="text-blue-600 hover:underline">Description du besoin</a></li>
+                <li class="mb-3"><a href="#perimetre" class="text-blue-600 hover:underline">Périmètre fonctionnel</a></li>
+                <li class="mb-3"><a href="#contraintes" class="text-blue-600 hover:underline">Contraintes techniques</a></li>
+                <li class="mb-3"><a href="#planning" class="text-blue-600 hover:underline">Planning prévisionnel</a></li>
+                <li class="mb-3"><a href="#budget" class="text-blue-600 hover:underline">Budget</a></li>
+                <li class="mb-3"><a href="#validation" class="text-blue-600 hover:underline">Critères de validation</a></li>
+                <li class="mb-3"><a href="#annexes" class="text-blue-600 hover:underline">Annexes</a></li>
+            </ol>
+            <div class="page-number">2</div>
+        </div>
+
+        <!-- Introduction -->
+        <div id="introduction" class="a4-page">
+            <h2 class="section-title">1. Introduction</h2>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">1.1 Contexte du projet</h3>
+                <p id="introContexte" class="text-lg text-gray-500 italic">[Contenu de la sous-section 1.1 Contexte du projet à compléter]</p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">1.2 Objectif global</h3>
+                <p id="introObjectif" class="text-lg text-gray-500 italic">[Contenu de la sous-section 1.2 Objectif global à compléter]</p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">1.3 Présentation du commanditaire</h3>
+                <p id="introCommanditaire" class="text-lg text-gray-500 italic">[Contenu de la sous-section 1.3 Présentation du commanditaire à compléter]</p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">1.4 Portée du projet</h3>
+                <p id="introPortee" class="text-lg text-gray-500 italic">[Contenu de la sous-section 1.4 Portée du projet à compléter]</p>
+            </div>
+            <div class="page-number">3</div>
+        </div>
+
+        <!-- Objectifs du projet -->
+        <div id="objectifs" class="a4-page">
+            <h2 class="section-title">2. Objectifs du projet</h2>
+            
+            <div class="mb-8">
+                <h3 class="subsection-title">2.1 Objectifs fonctionnels</h3>
+                <p id="objectifsFonc" class="text-lg text-gray-500 italic">[Contenu de la sous-section 2.1 Objectifs fonctionnels à compléter]</p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">2.2 Objectifs non fonctionnels</h3>
+                <p id="objectifsNonFonc" class="text-lg text-gray-500 italic">[Contenu de la sous-section 2.2 Objectifs non fonctionnels à compléter]</p>
+            </div>
+            <div class="page-number">4</div>
+        </div>
+
+        <!-- Description du besoin + Périmètre fonctionnel (ensemble) -->
+        <div id="description" class="a4-page">
+            <h2 class="section-title">3. Description du besoin</h2>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">3.1 Problèmes actuels</h3>
+                <p id="besoinProblemes" class="text-lg text-gray-500 italic">[Contenu de la sous-section 3.1 Problèmes actuels à compléter]</p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">3.2 Utilisateurs cibles</h3>
+                <p id="besoinUtilisateurs" class="text-lg text-gray-500 italic">[Contenu de la sous-section 3.2 Utilisateurs cibles à compléter]</p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">3.3 Besoins exprimés</h3>
+                <p id="besoinExprimes" class="text-lg text-gray-500 italic">[Contenu de la sous-section 3.3 Besoins exprimés à compléter]</p>
+            </div>
+
+            <h2 id="perimetre" class="section-title mt-16">4. Périmètre fonctionnel</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="subsection-title">4.1 Authentification</h3>
+                    <p id="perimetreAuth" class="text-lg text-gray-500 italic">[Contenu de la sous-section 4.1 Authentification à compléter]</p>
+                </div>
+                
+                <div>
+                    <h3 class="subsection-title">4.2 Tableau de bord</h3>
+                    <p id="perimetreDashboard" class="text-lg text-gray-500 italic">[Contenu de la sous-section 4.2 Tableau de bord à compléter]</p>
+                </div>
+            </div>
+            <div class="page-number">5</div>
+        </div>
+
+        <!-- Suite du périmètre fonctionnel -->
+        <div class="a4-page">
+            <h2 class="section-title">4. Périmètre fonctionnel (suite)</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="subsection-title">4.3 Gestion des utilisateurs</h3>
+                    <p id="perimetreUsers" class="text-lg text-gray-500 italic">[Contenu de la sous-section 4.3 Gestion des utilisateurs à compléter]</p>
+                </div>
+                
+                <div>
+                    <h3 class="subsection-title">4.4 Gestion des données</h3>
+                    <p id="perimetreData" class="text-lg text-gray-500 italic">[Contenu de la sous-section 4.4 Gestion des données à compléter]</p>
+                </div>
+                
+                <div>
+                    <h3 class="subsection-title">4.5 Notifications</h3>
+                    <p id="perimetreNotifs" class="text-lg text-gray-500 italic">[Contenu de la sous-section 4.5 Notifications à compléter]</p>
+                </div>
+                
+                <div>
+                    <h3 class="subsection-title">4.6 Autres fonctionnalités</h3>
+                    <p id="perimetreOther" class="text-lg text-gray-500 italic">[Contenu de la sous-section 4.6 Autres fonctionnalités à compléter]</p>
+                </div>
+            </div>
+            <div class="page-number">6</div>
+        </div>
+
+        <!-- Contraintes techniques -->
+        <div id="contraintes" class="a4-page">
+            <h2 class="section-title">5. Contraintes techniques</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="subsection-title">5.1 Langages et frameworks</h3>
+                    <p id="contrainteFrameworks" class="text-lg text-gray-500 italic">[Contenu de la sous-section 5.1 Langages et frameworks à compléter]</p>
+                </div>
+                
+                <div>
+                    <h3 class="subsection-title">5.2 Base de données</h3>
+                    <p id="contrainteDB" class="text-lg text-gray-500 italic">[Contenu de la sous-section 5.2 Base de données à compléter]</p>
+                </div>
+                
+                <div>
+                    <h3 class="subsection-title">5.3 Hébergement</h3>
+                    <p id="contrainteHosting" class="text-lg text-gray-500 italic">[Contenu de la sous-section 5.3 Hébergement à compléter]</p>
+                </div>
+                
+                <div>
+                    <h3 class="subsection-title">5.4 Sécurité</h3>
+                    <p id="contrainteSecurity" class="text-lg text-gray-500 italic">[Contenu de la sous-section 5.4 Sécurité à compléter]</p>
+                </div>
+                
+                <div>
+                    <h3 class="subsection-title">5.5 Compatibilité</h3>
+                    <p id="contrainteCompat" class="text-lg text-gray-500 italic">[Contenu de la sous-section 5.5 Compatibilité à compléter]</p>
+                </div>
+            </div>
+            <div class="page-number">7</div>
+        </div>
+
+        <!-- Planning et Budget -->
+        <div id="planning" class="a4-page">
+            <h2 class="section-title">6. Planning prévisionnel</h2>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">6.1 Phases du projet</h3>
+                <p id="planningPhases" class="text-lg text-gray-500 italic">[Contenu de la sous-section 6.1 Phases du projet à compléter]</p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">6.2 Dates clés</h3>
+                <p id="planningDates" class="text-lg text-gray-500 italic">[Contenu de la sous-section 6.2 Dates clés à compléter]</p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">6.3 Durée estimée</h3>
+                <p id="planningDuree" class="text-lg text-gray-500 italic">[Contenu de la sous-section 6.3 Durée estimée à compléter]</p>
+            </div>
+
+            <h2 id="budget" class="section-title mt-16">7. Budget</h2>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">7.1 Estimation des coûts</h3>
+                <p id="budgetCouts" class="text-lg text-gray-500 italic">[Contenu de la sous-section 7.1 Estimation des coûts à compléter]</p>
+            </div>
+            <div class="page-number">8</div>
+        </div>
+
+        <!-- Critères de validation et Annexes -->
+        <div id="validation" class="a4-page">
+            <h2 class="section-title">8. Critères de validation</h2>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">8.1 Éléments à vérifier</h3>
+                <p id="validationElements" class="text-lg text-gray-500 italic">[Contenu de la sous-section 8.1 Éléments à vérifier à compléter]</p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">8.2 Scénarios de test</h3>
+                <p id="validationScenarios" class="text-lg text-gray-500 italic">[Contenu de la sous-section 8.2 Scénarios de test à compléter]</p>
+            </div>
+
+            <h2 id="annexes" class="section-title mt-16">9. Annexes</h2>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">9.1 Glossaire</h3>
+                <p id="annexesGlossaire" class="text-lg text-gray-500 italic">[Contenu de la sous-section 9.1 Glossaire à compléter]</p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">9.2 Documents complémentaires</h3>
+                <p id="annexesComplement" class="text-lg text-gray-500 italic">[Contenu de la sous-section 9.2 Documents complémentaires à compléter]</p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="subsection-title">9.3 Références utiles</h3>
+                <p id="annexesReferences" class="text-lg text-gray-500 italic">[Contenu de la sous-section 9.3 Références utiles à compléter]</p>
+            </div>
+            <div class="page-number">9</div>
+        </div>
+
+        <footer class="text-center text-gray-500 text-sm mt-8 mb-4 no-print">
+            <p>© <span id="currentYear"></span> - Cahier des charges généré par l'application CDC Generator</p>
+        </footer>
+    </div>
+
+    <script>
+        // Toggle action menu
+        document.getElementById('actionButton').addEventListener('click', function() {
+            const menu = document.getElementById('actionMenu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const button = document.getElementById('actionButton');
+            const menu = document.getElementById('actionMenu');
+            
+            if (!button.contains(event.target) && !menu.contains(event.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // Set current date and year
+        const now = new Date();
+        document.getElementById('currentYear').textContent = now.getFullYear();
+
+        // Color picker functionality
+        function updateTitleColors(color) {
+            const titles = document.querySelectorAll('.section-title');
+            titles.forEach(title => {
+                title.style.color = color;
+            });
+            
+            // Update the color input value
+            document.getElementById('titleColor').value = color;
+            
+            // Update the color preview
+            document.getElementById('currentColorPreview').style.backgroundColor = color;
+            
+            // Update selected color option
+            document.querySelectorAll('.color-option').forEach(option => {
+                if (option.getAttribute('data-color') === color) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+
+        // Initialize custom color picker
+        const colorInput = document.getElementById('titleColor');
+        colorInput.addEventListener('input', function(e) {
+            updateTitleColors(e.target.value);
+        });
+
+        // Initialize color preset options
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const color = this.getAttribute('data-color');
+                updateTitleColors(color);
+            });
+        });
+
+        // Initialize title colors
+        document.addEventListener('DOMContentLoaded', function() {
+            const defaultColor = '#1E40AF';
+            updateTitleColors(defaultColor);
+            
+            // Mark the default color as selected
+            document.querySelectorAll('.color-option').forEach(option => {
+                if (option.getAttribute('data-color') === defaultColor) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Load data and populate template
+            loadCDCData();
+        });
+
+        // Download PDF function (placeholder)
+        function downloadPDF() {
+            alert("Fonctionnalité de téléchargement PDF en cours d'implémentation.");
+        }
+
+        // Function to simulate a loading delay (for enhanced UX)
+        function simulateLoading(callback, delay = 1000) {
+            const messages = [
+                "Préparation de votre document...",
+                "Chargement des données améliorées par l'IA...",
+                "Mise en forme du cahier des charges...",
+                "Finalisation du document...",
+                "C'est presque prêt !"
+            ];
+
+            let current = 0;
+            const loadingText = document.getElementById('loadingText');
+            
+            const interval = setInterval(() => {
+                if (current < messages.length) {
+                    loadingText.textContent = messages[current];
+                    current++;
+                }
+            }, delay / 2);
+            
+            setTimeout(() => {
+                clearInterval(interval);
+                callback();
+            }, delay);
+        }
+        
+        // Function to populate the template with CDC data
+        function loadCDCData() {
+            try {
+                let cdcData;
+                const loadingStatus = document.getElementById('loadingStatus');
+                
+                // Try to get enhanced data first from cdcGeneratedData (from AI enhancement)
+                const enhancedData = localStorage.getItem('cdcGeneratedData');
+                if (enhancedData) {
+                    loadingStatus.textContent = "Chargement du cahier des charges amélioré par IA...";
+                    cdcData = JSON.parse(enhancedData);
+                    console.log("Enhanced CDC data loaded", cdcData);
+                } else {
+                    // Fall back to form data if no enhanced data is available
+                    const savedData = localStorage.getItem('cdcFormData');
+                    if (savedData) {
+                        loadingStatus.textContent = "Chargement du cahier des charges...";
+                        cdcData = JSON.parse(savedData);
+                        console.log("CDC form data loaded", cdcData);
+                    } else {
+                        throw new Error("Aucune donnée de CDC trouvée");
+                    }
+                }
+                
+                // Simulate loading for better UX
+                simulateLoading(() => {
+                    populateTemplate(cdcData);
+                    // Hide loading screen and show content
+                    document.getElementById('loadingContainer').style.display = 'none';
+                    document.getElementById('contentContainer').classList.remove('content-hidden');
+                }, 2000);
+                
+            } catch (error) {
+                console.error("Error loading CDC data:", error);
+                document.getElementById('loadingStatus').textContent = "Erreur de chargement";
+                document.getElementById('loadingText').textContent = "Impossible de charger les données du cahier des charges.";
+                
+                // Show error for 3 seconds then redirect to form
+                setTimeout(() => {
+                    window.location.href = '/cdc-form';
+                }, 3000);
+            }
+        }
+        
+        // Function to populate the template with data
+        function populateTemplate(data) {
+            // Helper function to safely replace content and handle newlines
+            function setContent(elementId, content) {
+                const element = document.getElementById(elementId);
+                if (element && content) {
+                    // Replace newlines with <br> tags and remove placeholders
+                    element.innerHTML = content.replace(/\n/g, '<br>');
+                    element.classList.remove('text-gray-500', 'italic');
+                }
+            }
+            
+            // Page de garde
+            if (data.pageDeGarde) {
+                setContent('pageTitleProject', data.pageDeGarde.nomProjet);
+                setContent('pageClient', data.pageDeGarde.nomClient);
+                setContent('pageDate', new Date(data.pageDeGarde.date).toLocaleDateString('fr-FR'));
+                setContent('pageVersion', data.pageDeGarde.versionDocument || "1.0");
+                setContent('pageAuthor', data.pageDeGarde.redacteurs);
+            }
+            
+            // Introduction
+            if (data.introduction) {
+                setContent('introContexte', data.introduction.contexteProjet);
+                setContent('introObjectif', data.introduction.objectifGlobal);
+                setContent('introCommanditaire', data.introduction.presentationCommanditaire);
+                setContent('introPortee', data.introduction.porteeProjet);
+            }
+            
+            // Objectifs
+            if (data.objectifsProjet) {
+                setContent('objectifsFonc', data.objectifsProjet.objectifsFonctionnels);
+                setContent('objectifsNonFonc', data.objectifsProjet.objectifsNonFonctionnels);
+            }
+            
+            // Description du besoin
+            if (data.descriptionBesoin) {
+                setContent('besoinProblemes', data.descriptionBesoin.problemesActuels);
+                setContent('besoinUtilisateurs', data.descriptionBesoin.utilisateursCibles);
+                setContent('besoinExprimes', data.descriptionBesoin.besoinsExprimes);
+            }
+            
+            // Périmètre fonctionnel
+            if (data.perimetreFonctionnel) {
+                setContent('perimetreAuth', data.perimetreFonctionnel.authentification);
+                setContent('perimetreDashboard', data.perimetreFonctionnel.tableauBord);
+                setContent('perimetreUsers', data.perimetreFonctionnel.gestionUtilisateurs);
+                setContent('perimetreData', data.perimetreFonctionnel.gestionDonnees);
+                setContent('perimetreNotifs', data.perimetreFonctionnel.notifications);
+                setContent('perimetreOther', data.perimetreFonctionnel.autresFonctionnalites);
+            }
+            
+            // Contraintes techniques
+            if (data.contraintesTechniques) {
+                setContent('contrainteFrameworks', data.contraintesTechniques.langagesFrameworks);
+                setContent('contrainteDB', data.contraintesTechniques.baseDonnees);
+                setContent('contrainteHosting', data.contraintesTechniques.hebergement);
+                setContent('contrainteSecurity', data.contraintesTechniques.securite);
+                setContent('contrainteCompat', data.contraintesTechniques.compatibilite);
+            }
+            
+            // Planning
+            if (data.planningPrevisionnel) {
+                setContent('planningPhases', data.planningPrevisionnel.phasesProjet);
+                setContent('planningDates', data.planningPrevisionnel.datesCles);
+                setContent('planningDuree', data.planningPrevisionnel.dureeEstimee);
+            }
+            
+            // Budget
+            if (data.budget) {
+                setContent('budgetCouts', data.budget.estimationCouts);
+            }
+            
+            // Critères de validation
+            if (data.criteresValidation) {
+                setContent('validationElements', data.criteresValidation.elementsVerifier);
+                setContent('validationScenarios', data.criteresValidation.scenariosTest);
+            }
+            
+            // Annexes
+            if (data.annexes) {
+                setContent('annexesGlossaire', data.annexes.glossaire);
+                setContent('annexesComplement', data.annexes.documentsComplementaires);
+                setContent('annexesReferences', data.annexes.referencesUtiles);
+            }
+        }
+    </script>
+</body>
+</html>
