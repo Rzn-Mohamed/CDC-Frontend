@@ -5,6 +5,8 @@ import '../../templates/cdc-style.css';
 const CDCTemplate = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [isActionsOpen, setIsActionsOpen] = useState(false);
+  const [titleColor, setTitleColor] = useState('#000000');
 
   // Add page numbering
   const addPageNumbers = useCallback(() => {
@@ -38,10 +40,33 @@ const CDCTemplate = () => {
           } else {
             // It's plain text - convert line breaks and preserve formatting
             contentBlock.innerHTML = '';
-            const paragraph = document.createElement('p');
-            paragraph.textContent = content;
-            contentBlock.appendChild(paragraph);
+            
+            // Split by line breaks and create a paragraph for each significant chunk
+            const paragraphs = content.split(/\n\s*\n/); // Split on empty lines
+            paragraphs.forEach(paragraph => {
+              if (paragraph.trim()) {
+                // Create paragraph element
+                const p = document.createElement('p');
+                
+                // Handle line breaks within paragraphs
+                const lines = paragraph.split('\n');
+                for (let i = 0; i < lines.length; i++) {
+                  if (i > 0) {
+                    p.appendChild(document.createElement('br'));
+                  }
+                  p.appendChild(document.createTextNode(lines[i]));
+                }
+                
+                contentBlock.appendChild(p);
+              }
+            });
           }
+          
+          // Add print-friendly classes to all paragraphs
+          const paragraphs = contentBlock.querySelectorAll('p');
+          paragraphs.forEach(p => {
+            p.classList.add('print-paragraph');
+          });
         }
         break;
       }
@@ -200,26 +225,42 @@ const CDCTemplate = () => {
     console.log('Loading CDC data...');
 
     try {
-      // Check if data is available in localStorage (for preview/testing)
+      // Get the CDC ID from URL query parameter if available
+      const urlParams = new URLSearchParams(window.location.search);
+      const cdcId = urlParams.get('id');
+
+      // Check if we have an ID and if it's from a saved document
+      if (cdcId) {
+        console.log('Looking for document with ID:', cdcId);
+        // Try to find the document in dashboardDocuments
+        const savedDocuments = localStorage.getItem('dashboardDocuments');
+        
+        if (savedDocuments) {
+          const documents = JSON.parse(savedDocuments);
+          const savedDocument = documents.find(doc => doc.id.toString() === cdcId.toString());
+          
+          if (savedDocument) {
+            console.log('Found saved document:', savedDocument);
+            // Document found in dashboard, try to load the corresponding form data
+            const formData = localStorage.getItem('cdcFormData');
+            
+            if (formData) {
+              processCDCData(JSON.parse(formData));
+              return;
+            }
+          }
+        }
+      }
+
+      // If no ID provided or document not found by ID, check if form data exists in localStorage
       const localData = localStorage.getItem('cdcFormData');
       if (localData) {
         processCDCData(JSON.parse(localData));
         return;
       }
 
-      // Get the CDC ID from URL query parameter if available
-      const urlParams = new URLSearchParams(window.location.search);
-      const cdcId = urlParams.get('id');
-
-      if (!cdcId) {
-        console.warn('No CDC ID provided in URL. Using sample data.');
-        // Use sample data for preview
-        processCDCData(getSampleData());
-        return;
-      }
-
-      // For future implementation:
-      // Fetch from API if needed
+      // No data found, use sample data as fallback
+      console.warn('No document found. Using sample data.');
       processCDCData(getSampleData());
 
     } catch (error) {
@@ -229,6 +270,86 @@ const CDCTemplate = () => {
     }
   }, [processCDCData, getSampleData]);
 
+  // Function to handle color change - improve to ensure it works properly
+  const handleColorChange = (e) => {
+    const newColor = e.target.value;
+    setTitleColor(newColor);
+    
+    // Apply the color to all section and subsection titles
+    const sectionTitles = document.querySelectorAll('.section-title, .subsection-title, .cover-title');
+    sectionTitles.forEach(title => {
+      title.style.color = newColor;
+    });
+    
+    // Store the color preference in localStorage for persistence
+    localStorage.setItem('cdcTitleColor', newColor);
+  };
+  
+  // Function to handle save
+  const handleSave = () => {
+    try {
+      // Get document data - first try from localStorage, then get from current document content
+      const currentData = localStorage.getItem('cdcFormData') 
+        ? JSON.parse(localStorage.getItem('cdcFormData')) 
+        : {};
+      
+      // Extract title and version info from the document
+      const projectNameElement = document.querySelector('.project-name');
+      const metaValues = document.querySelectorAll('.meta-value');
+      
+      // Generate unique document data to be saved to dashboard
+      const newDocument = {
+        id: Date.now(), // Unique ID based on timestamp
+        title: projectNameElement ? `CDC - ${projectNameElement.textContent}` : 'CDC - New Document',
+        type: 'pdf',
+        lastModified: 'Just now',
+        version: metaValues.length > 0 ? metaValues[0].textContent : 'v1.0',
+        contributors: []
+      };
+      
+      // If we have redacteurs/authors data, use it for contributors
+      if (currentData.pageDeGarde && currentData.pageDeGarde.redacteurs) {
+        // Convert string to array if needed
+        if (typeof currentData.pageDeGarde.redacteurs === 'string') {
+          newDocument.contributors = currentData.pageDeGarde.redacteurs
+            .split(/[,\n]/) // Split by commas or newlines
+            .map(name => name.trim())
+            .filter(name => name); // Remove empty entries
+        } else if (Array.isArray(currentData.pageDeGarde.redacteurs)) {
+          newDocument.contributors = currentData.pageDeGarde.redacteurs;
+        }
+      }
+      
+      // Get existing documents from localStorage or use empty array
+      const existingDocuments = localStorage.getItem('dashboardDocuments') 
+        ? JSON.parse(localStorage.getItem('dashboardDocuments')) 
+        : [];
+      
+      // Add new document to the beginning of the array
+      const updatedDocuments = [newDocument, ...existingDocuments];
+      
+      // Save the updated documents array back to localStorage
+      localStorage.setItem('dashboardDocuments', JSON.stringify(updatedDocuments));
+      
+      // Show confirmation message to user
+      alert('Document sauvegardé avec succès! Redirection vers le tableau de bord...');
+      
+      // Close the actions menu
+      setIsActionsOpen(false);
+      
+      // Redirect to dashboard
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error saving document:', error);
+      alert('Une erreur est survenue lors de la sauvegarde du document. Veuillez réessayer.');
+    }
+  };
+  
+  // Toggle actions menu
+  const toggleActions = () => {
+    setIsActionsOpen(prev => !prev);
+  };
+
   // Memoize initializeButtons function for dependency array
   const initializeButtons = useCallback(() => {
     // Set up the download PDF button
@@ -236,6 +357,7 @@ const CDCTemplate = () => {
     if (downloadPdfButton) {
       downloadPdfButton.addEventListener('click', function() {
         window.print();
+        setIsActionsOpen(false); // Close the menu after action
       });
     }
 
@@ -251,8 +373,68 @@ const CDCTemplate = () => {
 
   // Add the missing dependencies to useEffect
   useEffect(() => {
+    // Add print styles to handle page breaks
+    const printStyles = document.createElement('style');
+    printStyles.textContent = `
+      @media print {
+        /* Avoid breaking inside important elements */
+        .subsection, h2, h3 {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+        
+        /* Allow paragraphs to break across pages if needed */
+        p {
+          orphans: 3;
+          widows: 3;
+        }
+        
+        /* Force page breaks before major sections */
+        .section {
+          break-before: page;
+          page-break-before: always;
+        }
+        
+        /* Prevent page breaks after headings */
+        h2, h3 {
+          break-after: avoid;
+          page-break-after: avoid;
+        }
+        
+        /* First section shouldn't have page break before it */
+        .section:first-of-type {
+          break-before: auto;
+          page-break-before: auto;
+        }
+        
+        /* Special handling for cover page and TOC */
+        .cover-page {
+          break-after: page;
+          page-break-after: always;
+        }
+        
+        .toc {
+          break-after: page;
+          page-break-after: always;
+        }
+      }
+    `;
+    document.head.appendChild(printStyles);
+
     // Load data and initialize template when component mounts
     loadCDCData();
+
+    // Load saved color preference if exists
+    const savedColor = localStorage.getItem('cdcTitleColor');
+    if (savedColor) {
+      setTitleColor(savedColor);
+      setTimeout(() => {
+        const sectionTitles = document.querySelectorAll('.section-title, .subsection-title, .cover-title');
+        sectionTitles.forEach(title => {
+          title.style.color = savedColor;
+        });
+      }, 100);
+    }
 
     // Initialize date fields
     const currentDate = new Date().toLocaleDateString('fr-FR');
@@ -285,6 +467,7 @@ const CDCTemplate = () => {
       if (editButton) {
         editButton.replaceWith(editButton.cloneNode(true));
       }
+      document.head.removeChild(printStyles);
     };
   }, [loadCDCData, initializeButtons, addPageNumbers]);
 
@@ -314,35 +497,66 @@ const CDCTemplate = () => {
         </div>
       )}
 
+      {/* Floating Actions Button - moved to top */}
+      <div className={`floating-actions-container no-print ${isActionsOpen ? 'open' : ''}`}>
+        <button 
+          className="floating-action-button main-action" 
+          onClick={toggleActions}
+          title={isActionsOpen ? "Fermer les actions" : "Ouvrir les actions"}
+        >
+          {isActionsOpen ? 
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg> : 
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          }
+        </button>
+        
+        {isActionsOpen && (
+          <div className="action-buttons">
+            <button className="action-button" onClick={() => window.print()} title="Imprimer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                <rect x="6" y="14" width="12" height="8"></rect>
+              </svg>
+              <span>Imprimer</span>
+            </button>
+            
+            <button className="action-button" onClick={handleSave} title="Sauvegarder">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              <span>Sauvegarder</span>
+            </button>
+            
+            <div className="action-button color-picker-container" title="Changer couleur des titres">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c-4.97 0-9-4.03-9-9m9 9a9 9 0 0 0 9-9m-9 0c4.97 0 9 4.03 9 9m-9 0a9 9 0 0 0-9 9"></path>
+              </svg>
+              <span>Couleur titres</span>
+              <input 
+                type="color" 
+                value={titleColor} 
+                onChange={handleColorChange}
+                className="color-picker"
+                title="Choisir une couleur"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* CDC Template HTML Structure */}
       <div>
-        {/* Contrôles (non imprimables) */}
-        <div className="controls no-print">
-          <button className="btn" onClick={() => window.print()}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="6 9 6 2 18 2 18 9"></polyline>
-              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-              <rect x="6" y="14" width="12" height="8"></rect>
-            </svg>
-            Imprimer
-          </button>
-          <button className="btn btn-secondary" id="editButton">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0-2 2h14a2 2 0 0 0 2-2v-7"></path>
-              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-            </svg>
-            Modifier
-          </button>
-          <button className="btn btn-secondary" id="downloadPdfButton">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="7 10 12 15 17 10"></polyline>
-              <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            Télécharger PDF
-          </button>
-        </div>
-
+        {/* Remove old controls since we now have the floating action menu */}
+        
         <div className="cdc-document">
           {/* Date de génération */}
           <div className="generate-date" contentEditable="true">Document généré le <span id="current-date"></span></div>
@@ -714,6 +928,105 @@ const CDCTemplate = () => {
           </div>
         </div>
       </div>
+
+      {/* CSS styles for the floating action button and menu */}
+      <style jsx="true">{`
+        .floating-actions-container {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          z-index: 1000;
+        }
+        
+        .floating-action-button {
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          background-color: #1976d2;
+          color: white;
+          border: none;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          margin-bottom: 10px;
+        }
+        
+        .floating-action-button:hover {
+          background-color: #1565c0;
+          transform: scale(1.05);
+        }
+        
+        .action-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          margin-top: 10px;
+        }
+        
+        .action-button {
+          display: flex;
+          align-items: center;
+          padding: 8px 16px;
+          background-color: white;
+          border-radius: 20px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+          border: 1px solid #e0e0e0;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+        }
+        
+        .action-button:hover {
+          background-color: #f5f5f5;
+          transform: translateX(-5px);
+        }
+        
+        .action-button svg {
+          margin-right: 8px;
+          flex-shrink: 0;
+        }
+        
+        .color-picker-container {
+          position: relative;
+          display: flex;
+          align-items: center;
+        }
+        
+        .color-picker {
+          margin-left: 10px;
+          width: 30px;
+          height: 30px;
+          padding: 0;
+          border: none;
+          border-radius: 50%;
+          overflow: hidden;
+          cursor: pointer;
+          appearance: none;
+          -webkit-appearance: none;
+          background-color: transparent;
+        }
+        
+        .color-picker::-webkit-color-swatch-wrapper {
+          padding: 0;
+        }
+        
+        .color-picker::-webkit-color-swatch {
+          border: none;
+          border-radius: 50%;
+        }
+        
+        /* Fix for Firefox */
+        .color-picker::-moz-color-swatch {
+          border: none;
+          border-radius: 50%;
+        }
+      `}</style>
     </>
   );
 };

@@ -24,61 +24,63 @@ const CDCForm = ({ onClose }) => {
   
   // Form data state
   const [formData, setFormData] = useState({
-    pageDeGarde: {
-      nomProjet: '',
-      nomClient: '',
-      date: new Date().toISOString().split('T')[0],
-      versionDocument: '1.0',
-      redacteurs: '',
-    },
-    introduction: {
-      contexteProjet: '',
-      objectifGlobal: '',
-      presentationCommanditaire: '',
-      porteeProjet: '',
-    },
-    objectifsProjet: {
-      objectifsFonctionnels: '',
-      objectifsNonFonctionnels: '',
-    },
-    descriptionBesoin: {
-      problemesActuels: '',
-      utilisateursCibles: '',
-      besoinsExprimes: '',
-    },
-    perimetreFonctionnel: {
-      authentification: '',
-      tableauBord: '',
-      gestionUtilisateurs: '',
-      gestionDonnees: '',
-      notifications: '',
-      autresFonctionnalites: '',
-    },
-    contraintesTechniques: {
-      langagesFrameworks: '',
-      baseDonnees: '',
-      hebergement: '',
-      securite: '',
-      compatibilite: '',
-    },
-    planningPrevisionnel: {
-      phasesProjet: '',
-      datesCles: '',
-      dureeEstimee: '',
-    },
-    budget: {
-      estimationCouts: '',
-    },
-    criteresValidation: {
-      elementsVerifier: '',
-      scenariosTest: '',
-    },
-    annexes: {
-      glossaire: '',
-      documentsComplementaires: '',
-      referencesUtiles: '',
-    },
-  });
+  pageDeGarde: {
+    nomProjet: 'Générateur de CV Automatique en Français',
+    nomClient: 'Emsi',
+    date: new Date().toISOString().split('T')[0],
+    versionDocument: '1.0',
+    redacteurs: 'Razin Mohamed, Équipe IA, Département Informatique',
+  },
+  introduction: {
+    contexteProjet: "Dans un marché de l'emploi de plus en plus compétitif, les candidats doivent adapter leur curriculum vitae (CV) à chaque offre pour maximiser leurs chances de succès. Or, cette tâche peut s’avérer complexe et chronophage, notamment pour les étudiants et jeunes diplômés qui manquent souvent de recul, de temps, ou d’outils adaptés pour valoriser leur parcours.",
+    objectifGlobal: "Ce projet vise à développer une application web intelligente, capable de générer automatiquement des CV personnalisés en français. L’outil prendra en compte le profil utilisateur ainsi que l’offre d’emploi ciblée afin de produire un document à la fois professionnel, pertinent et optimisé pour les systèmes de suivi de candidatures (ATS).",
+    presentationCommanditaire: "Ce projet est commandité par le département d'informatique de l’Université de Technologie de Paris. Il s’inscrit dans une initiative pédagogique visant à accompagner les étudiants dans leur insertion professionnelle par le biais de solutions technologiques concrètes et innovantes.",
+    porteeProjet: "L'application permettra aux utilisateurs de choisir parmi plusieurs modèles de CV esthétiques et fonctionnels, de saisir ou importer leurs données personnelles, et de générer automatiquement un CV formaté, conforme aux exigences modernes du recrutement. L’outil intégrera également des fonctionnalités de personnalisation avancée et de conseil intelligent grâce à l’intelligence artificielle.",
+  },
+  objectifsProjet: {
+    objectifsFonctionnels: "- Génération de CV dynamiques à partir des données personnelles fournies par l’utilisateur.\n- Possibilité de sélectionner parmi différents modèles de présentation.\n- Intégration d’une intelligence artificielle pour analyser l’offre d’emploi et optimiser le contenu du CV.\n- Fonction d’exportation au format PDF, prête à l’emploi pour candidatures en ligne.",
+    objectifsNonFonctionnels: "- Interface utilisateur intuitive, fluide et responsive (adaptée aux mobiles et tablettes).\n- Temps de génération réduit à moins de 5 secondes.\n- Conformité stricte au Règlement Général sur la Protection des Données (RGPD).\n- Code structuré en modules indépendants pour faciliter la maintenance et les évolutions futures.",
+  },
+  descriptionBesoin: {
+    problemesActuels: "De nombreux candidats perdent un temps précieux à adapter manuellement leur CV à chaque nouvelle candidature. De plus, l’absence de personnalisation ou l’usage de modèles trop génériques peut nuire à l’impact du CV et réduire les chances d’être retenu. Ces freins sont d’autant plus marqués pour les profils juniors ou en reconversion.",
+    utilisateursCibles: "Les utilisateurs principaux de l’application seront les étudiants, les jeunes diplômés et plus largement les chercheurs d’emploi francophones souhaitant améliorer la qualité de leurs candidatures.",
+    besoinsExprimes: "Les utilisateurs ont besoin d’un outil leur permettant de générer facilement un CV professionnel, en français, conforme aux standards actuels du recrutement, sans qu’ils aient besoin de compétences en design graphique ou en rédaction professionnelle.",
+  },
+  perimetreFonctionnel: {
+    authentification: "Système sécurisé de connexion incluant email/mot de passe, ainsi que des options de connexion via Google et LinkedIn pour faciliter l'accès.",
+    tableauBord: "Espace utilisateur personnel affichant l’ensemble des CV créés, les brouillons en cours, et un accès rapide aux versions récentes.",
+    gestionUtilisateurs: "Possibilité de modifier les informations de profil, gérer les préférences de l’utilisateur, supprimer son compte, ou exporter ses données.",
+    gestionDonnees: "Stockage structuré et sécurisé des données saisies par l’utilisateur (formation, expérience, compétences, etc.), avec possibilité d'import automatique depuis LinkedIn ou un fichier JSON.",
+    notifications: "Système d’alerte intégré informant l’utilisateur de la progression de la génération, des erreurs éventuelles, ou des actions recommandées (ex : compléter le profil).",
+    autresFonctionnalites: "Intégration d’un chatbot interactif pour guider l’utilisateur dans la saisie des informations, fournir des suggestions de contenu, ou optimiser les formulations existantes.",
+  },
+  contraintesTechniques: {
+    langagesFrameworks: "Back-end : Python avec Django pour l’API RESTful. Front-end : JavaScript avec HTMX pour les interactions dynamiques, Tailwind CSS pour le style.",
+    baseDonnees: "Base de données relationnelle PostgreSQL, choisie pour sa robustesse et sa compatibilité avec Django ORM.",
+    hebergement: "L’application sera hébergée sur une plateforme cloud évolutive, comme Heroku pour le prototypage initial, avec possibilité de déploiement sur AWS EC2 pour la version finale.",
+    securite: "Utilisation de JWT (JSON Web Token) pour l’authentification sécurisée, chiffrement des données sensibles, et respect strict des normes RGPD en matière de collecte et traitement des données personnelles.",
+    compatibilite: "Optimisation de l’application pour une utilisation sur l’ensemble des navigateurs récents (Chrome, Firefox, Safari, Edge), ainsi que sur les appareils mobiles (responsive design).",
+  },
+  planningPrevisionnel: {
+    phasesProjet: "- **Analyse des besoins** : identification des utilisateurs cibles, rédaction des spécifications (Semaine 1).\n- **Développement du MVP (Minimum Viable Product)** : conception du back-end, front-end, et intégration de l’IA (Semaines 2 à 5).\n- **Phase de tests** : retour utilisateurs, débogage, amélioration UX (Semaine 6).\n- **Mise en production** : finalisation, documentation, déploiement (Semaine 7).",
+    datesCles: "- **Début du projet** : 1er juin 2025\n- **Livraison MVP** : 5 juillet 2025\n- **Déploiement final** : 20 juillet 2025",
+    dureeEstimee: "Le projet est prévu pour une durée totale de 7 semaines, avec des livrables à chaque étape clé pour assurer un suivi régulier.",
+  },
+  budget: {
+    estimationCouts: "Les coûts estimés pour le projet s’élèvent à environ 1500€, couvrant :\n- Frais d’hébergement cloud\n- Utilisation d’API IA (ex : GPT-4)\n- Licences éventuelles pour bibliothèques externes\n- Services de monitoring et sécurité",
+  },
+  criteresValidation: {
+    elementsVerifier: "- Présence et bon fonctionnement des fonctionnalités principales.\n- Temps de génération inférieur à 5 secondes.\n- Qualité du CV généré (pertinence, mise en page, conformité ATS).\n- Respect strict des obligations RGPD.",
+    scenariosTest: "- Génération d’un CV complet avec toutes les sections remplies.\n- Tests de robustesse avec données incomplètes ou mal saisies.\n- Sélection de différents modèles et exportation PDF.\n- Test d’accessibilité sur différentes plateformes (mobile, desktop).",
+  },
+  annexes: {
+    glossaire: "ATS : Applicant Tracking System, logiciel utilisé par les recruteurs pour filtrer les candidatures.\nRGPD : Règlement Général sur la Protection des Données, législation européenne protégeant les données personnelles.",
+    documentsComplementaires: "Maquettes d’interface utilisateur (mockups), schéma de la base de données relationnelle, documentation technique du back-end.",
+    referencesUtiles: "Guide européen du CV : https://europa.eu/youreurope/citizens/work/job-search/cv-online/index_fr.htm\nGénérateur de CV Zety : https://zety.fr/cv\nBonnes pratiques UX : https://uxdesign.cc",
+  },
+});
+
+
   
   // Form sections
   const sections = [

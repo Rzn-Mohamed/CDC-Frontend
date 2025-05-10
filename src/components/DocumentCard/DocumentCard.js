@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const DocumentCard = ({ document }) => {
+  const navigate = useNavigate();
+  
   const getTypeColor = (type) => {
     const colors = {
       pdf: 'bg-red-100',
@@ -12,8 +15,17 @@ const DocumentCard = ({ document }) => {
     return colors[type] || 'bg-purple-100';
   };
 
+  // Function to open the document in the CDCTemplate
+  const handleOpenDocument = () => {
+    // Navigate to the template with the document ID
+    navigate(`/cdc-template?id=${document.id}`);
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-4">
+    <div 
+      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-4 cursor-pointer"
+      onClick={handleOpenDocument}
+    >
       <div className="flex items-start justify-between">
         <div className="flex items-center">
           <div className={`${getTypeColor(document.type)} p-4 rounded-lg mr-4`}>
@@ -27,7 +39,13 @@ const DocumentCard = ({ document }) => {
           </div>
         </div>
         <div className="relative">
-          <button className="text-gray-500 hover:text-gray-700">
+          <button 
+            className="text-gray-500 hover:text-gray-700"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent card click event
+              // Add dropdown menu functionality here if needed
+            }}
+          >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
             </svg>
