@@ -17,7 +17,7 @@ const DocumentCard = ({ document }) => {
 
   // Function to open the document in the CDCTemplate
   const handleOpenDocument = () => {
-    // Navigate to the template with the document ID
+    // Navigate to the template with the document ID, without showing progress bar
     navigate(`/cdc-template?id=${document.id}`);
   };
 

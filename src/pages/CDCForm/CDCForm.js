@@ -25,58 +25,58 @@ const CDCForm = ({ onClose }) => {
   // Form data state
   const [formData, setFormData] = useState({
   pageDeGarde: {
-    nomProjet: 'Générateur de CV Automatique en Français',
+    nomProjet: 'Outils en ligne de génération automatique des cahiers des charges',
     nomClient: 'Emsi',
     date: new Date().toISOString().split('T')[0],
     versionDocument: '1.0',
     redacteurs: 'Razin Mohamed, Équipe IA, Département Informatique',
   },
   introduction: {
-    contexteProjet: "Dans un marché de l'emploi de plus en plus compétitif, les candidats doivent adapter leur curriculum vitae (CV) à chaque offre pour maximiser leurs chances de succès. Or, cette tâche peut s’avérer complexe et chronophage, notamment pour les étudiants et jeunes diplômés qui manquent souvent de recul, de temps, ou d’outils adaptés pour valoriser leur parcours.",
-    objectifGlobal: "Ce projet vise à développer une application web intelligente, capable de générer automatiquement des CV personnalisés en français. L’outil prendra en compte le profil utilisateur ainsi que l’offre d’emploi ciblée afin de produire un document à la fois professionnel, pertinent et optimisé pour les systèmes de suivi de candidatures (ATS).",
-    presentationCommanditaire: "Ce projet est commandité par le département d'informatique de l’Université de Technologie de Paris. Il s’inscrit dans une initiative pédagogique visant à accompagner les étudiants dans leur insertion professionnelle par le biais de solutions technologiques concrètes et innovantes.",
-    porteeProjet: "L'application permettra aux utilisateurs de choisir parmi plusieurs modèles de CV esthétiques et fonctionnels, de saisir ou importer leurs données personnelles, et de générer automatiquement un CV formaté, conforme aux exigences modernes du recrutement. L’outil intégrera également des fonctionnalités de personnalisation avancée et de conseil intelligent grâce à l’intelligence artificielle.",
+    contexteProjet: "Dans un environnement professionnel de plus en plus exigeant en termes de qualité documentaire, la rédaction de cahiers des charges reste une étape cruciale mais chronophage dans le développement de projets. Les entreprises et indépendants peinent souvent à produire des documents formalisés, complets et adaptés à leurs besoins spécifiques.",
+    objectifGlobal: "Ce projet vise à développer une plateforme web intuitive permettant de générer automatiquement des cahiers des charges professionnels, structurés et personnalisables. L'outil guidera l'utilisateur à travers un processus simplifié de saisie d'informations pour produire un document répondant aux standards de l'industrie, tout en intégrant des recommandations adaptatives basées sur l'intelligence artificielle.",
+    presentationCommanditaire: "Ce projet est commandité par le département d'informatique de l'EMSI (École Marocaine des Sciences de l'Ingénieur). Il s'inscrit dans une initiative visant à améliorer les pratiques de gestion de projet et à fournir aux étudiants, professionnels et entreprises des outils modernes pour la formalisation de leurs besoins fonctionnels et techniques.",
+    porteeProjet: "La plateforme permettra aux utilisateurs de générer des cahiers des charges pour divers types de projets informatiques, avec différents niveaux de complexité et de personnalisation. Elle intégrera des modèles prédéfinis, des suggestions intelligentes de contenu, et des fonctionnalités d'exportation vers différents formats. L'outil sera accessible en ligne et optimisé pour différents cas d'usage, des projets simples aux initiatives plus complexes.",
   },
   objectifsProjet: {
-    objectifsFonctionnels: "- Génération de CV dynamiques à partir des données personnelles fournies par l’utilisateur.\n- Possibilité de sélectionner parmi différents modèles de présentation.\n- Intégration d’une intelligence artificielle pour analyser l’offre d’emploi et optimiser le contenu du CV.\n- Fonction d’exportation au format PDF, prête à l’emploi pour candidatures en ligne.",
-    objectifsNonFonctionnels: "- Interface utilisateur intuitive, fluide et responsive (adaptée aux mobiles et tablettes).\n- Temps de génération réduit à moins de 5 secondes.\n- Conformité stricte au Règlement Général sur la Protection des Données (RGPD).\n- Code structuré en modules indépendants pour faciliter la maintenance et les évolutions futures.",
+    objectifsFonctionnels: "- Création de cahiers des charges dynamiques via une interface guidée et intuitive\n- Proposition automatique de contenus adaptés au secteur et à la nature du projet\n- Génération de documents structurés selon différents modèles (traditionnel, agile, etc.)\n- Exportation des documents en formats PDF, Word et HTML\n- Partage sécurisé des cahiers des charges avec possibilité de collaboration",
+    objectifsNonFonctionnels: "- Interface utilisateur responsive, accessible sur tous appareils (desktop, tablette, mobile)\n- Haute performance avec temps de génération des documents inférieur à 3 secondes\n- Protection des données utilisateurs conforme au RGPD\n- Architecture modulaire facilitant l'ajout de nouveaux modèles et fonctionnalités\n- Disponibilité du service 24/7 avec un taux de disponibilité de 99,9%",
   },
   descriptionBesoin: {
-    problemesActuels: "De nombreux candidats perdent un temps précieux à adapter manuellement leur CV à chaque nouvelle candidature. De plus, l’absence de personnalisation ou l’usage de modèles trop génériques peut nuire à l’impact du CV et réduire les chances d’être retenu. Ces freins sont d’autant plus marqués pour les profils juniors ou en reconversion.",
-    utilisateursCibles: "Les utilisateurs principaux de l’application seront les étudiants, les jeunes diplômés et plus largement les chercheurs d’emploi francophones souhaitant améliorer la qualité de leurs candidatures.",
-    besoinsExprimes: "Les utilisateurs ont besoin d’un outil leur permettant de générer facilement un CV professionnel, en français, conforme aux standards actuels du recrutement, sans qu’ils aient besoin de compétences en design graphique ou en rédaction professionnelle.",
+    problemesActuels: "La rédaction de cahiers des charges est souvent perçue comme un exercice fastidieux et technique. Les difficultés rencontrées incluent le manque de structure cohérente, l'omission d'informations essentielles, et la difficulté à adapter le document au contexte spécifique du projet. De nombreux professionnels finissent par produire des documents incomplets, mal structurés, ou copier-coller des modèles génériques inadaptés à leurs besoins réels.",
+    utilisateursCibles: "La plateforme s'adresse principalement aux chefs de projet, consultants IT, entrepreneurs, étudiants en informatique et aux équipes de développement qui doivent régulièrement produire ou analyser des cahiers des charges. Les utilisateurs secondaires incluent les clients et parties prenantes qui pourront consulter et valider les documents générés.",
+    besoinsExprimes: "Les utilisateurs ont besoin d'un outil qui les guide à travers le processus de création d'un cahier des charges sans qu'ils aient besoin de connaissances préalables sur sa structure idéale. Ils souhaitent pouvoir générer rapidement un document professionnel, personnalisable, et qui intègre automatiquement les bonnes pratiques du domaine.",
   },
   perimetreFonctionnel: {
-    authentification: "Système sécurisé de connexion incluant email/mot de passe, ainsi que des options de connexion via Google et LinkedIn pour faciliter l'accès.",
-    tableauBord: "Espace utilisateur personnel affichant l’ensemble des CV créés, les brouillons en cours, et un accès rapide aux versions récentes.",
-    gestionUtilisateurs: "Possibilité de modifier les informations de profil, gérer les préférences de l’utilisateur, supprimer son compte, ou exporter ses données.",
-    gestionDonnees: "Stockage structuré et sécurisé des données saisies par l’utilisateur (formation, expérience, compétences, etc.), avec possibilité d'import automatique depuis LinkedIn ou un fichier JSON.",
-    notifications: "Système d’alerte intégré informant l’utilisateur de la progression de la génération, des erreurs éventuelles, ou des actions recommandées (ex : compléter le profil).",
-    autresFonctionnalites: "Intégration d’un chatbot interactif pour guider l’utilisateur dans la saisie des informations, fournir des suggestions de contenu, ou optimiser les formulations existantes.",
+    authentification: "Système d'authentification sécurisé avec identifiant/mot de passe, connexion via Google/LinkedIn, et authentification à deux facteurs pour la protection des données sensibles.",
+    tableauBord: "Interface principale présentant les projets en cours, l'historique des cahiers des charges générés, des modèles favoris, et un accès rapide aux fonctionnalités clés de la plateforme.",
+    gestionUtilisateurs: "Système complet de gestion des profils utilisateurs, avec différents niveaux d'accès (gratuit, premium, administrateur), gestion des préférences, et options de personnalisation de l'interface.",
+    gestionDonnees: "Mécanisme de stockage et organisation des données projet, avec importation possible depuis des fichiers externes (JSON, Excel, etc.) et synchronisation avec des outils de gestion de projet (Jira, Trello, etc.).",
+    notifications: "Système d'alertes intelligent pour informer les utilisateurs des actions importantes (modifications, commentaires, validations) et des suggestions d'amélioration pour leurs documents.",
+    autresFonctionnalites: "Assistant IA intégré pour aider à la rédaction et formuler des recommandations adaptées au contexte projet, module d'analyse de cohérence du document, et bibliothèque de composants réutilisables.",
   },
   contraintesTechniques: {
-    langagesFrameworks: "Back-end : Python avec Django pour l’API RESTful. Front-end : JavaScript avec HTMX pour les interactions dynamiques, Tailwind CSS pour le style.",
-    baseDonnees: "Base de données relationnelle PostgreSQL, choisie pour sa robustesse et sa compatibilité avec Django ORM.",
-    hebergement: "L’application sera hébergée sur une plateforme cloud évolutive, comme Heroku pour le prototypage initial, avec possibilité de déploiement sur AWS EC2 pour la version finale.",
-    securite: "Utilisation de JWT (JSON Web Token) pour l’authentification sécurisée, chiffrement des données sensibles, et respect strict des normes RGPD en matière de collecte et traitement des données personnelles.",
-    compatibilite: "Optimisation de l’application pour une utilisation sur l’ensemble des navigateurs récents (Chrome, Firefox, Safari, Edge), ainsi que sur les appareils mobiles (responsive design).",
+    langagesFrameworks: "Frontend: React.js avec Material UI et TailwindCSS pour l'interface utilisateur. Backend: Node.js avec Express et GraphQL pour l'API. IA: TensorFlow.js pour le modèle de recommandation côté client.",
+    baseDonnees: "MongoDB comme base de données principale pour le stockage des documents et des informations utilisateurs. Redis pour la gestion des caches et des sessions.",
+    hebergement: "Architecture cloud sur AWS, utilisant les services S3 pour le stockage des documents, Lambda pour les traitements asynchrones, et EC2 pour les instances serveur.",
+    securite: "Chiffrement des données sensibles, audit de sécurité régulier, système de permissions granulaires, et protection contre les attaques CSRF/XSS. Conformité RGPD avec exportation des données personnelles.",
+    compatibilite: "Application compatible avec les navigateurs modernes (Chrome, Firefox, Edge, Safari) et responsive pour adaptation aux différentes tailles d'écran (desktop, tablette, mobile).",
   },
   planningPrevisionnel: {
-    phasesProjet: "- **Analyse des besoins** : identification des utilisateurs cibles, rédaction des spécifications (Semaine 1).\n- **Développement du MVP (Minimum Viable Product)** : conception du back-end, front-end, et intégration de l’IA (Semaines 2 à 5).\n- **Phase de tests** : retour utilisateurs, débogage, amélioration UX (Semaine 6).\n- **Mise en production** : finalisation, documentation, déploiement (Semaine 7).",
-    datesCles: "- **Début du projet** : 1er juin 2025\n- **Livraison MVP** : 5 juillet 2025\n- **Déploiement final** : 20 juillet 2025",
-    dureeEstimee: "Le projet est prévu pour une durée totale de 7 semaines, avec des livrables à chaque étape clé pour assurer un suivi régulier.",
+    phasesProjet: "- **Phase d'analyse** : Étude des besoins utilisateurs, benchmark des solutions existantes, définition des spécifications (3 semaines)\n- **Conception** : Architecture technique, maquettage UX/UI, modélisation des données (4 semaines)\n- **Développement** : Frontend, backend, intégration IA, tests unitaires (10 semaines)\n- **Phase de tests** : Tests d'intégration, tests utilisateurs, corrections (3 semaines)\n- **Déploiement** : Mise en production, formation, documentation (2 semaines)",
+    datesCles: "- **Démarrage projet** : 1er juin 2025\n- **Livraison de la maquette fonctionnelle** : 15 juillet 2025\n- **Version beta** : 1er octobre 2025\n- **Déploiement production** : 15 novembre 2025",
+    dureeEstimee: "La durée totale du projet est estimée à 22 semaines (environ 5 mois), avec une répartition équilibrée entre les phases de conception, développement et tests.",
   },
   budget: {
-    estimationCouts: "Les coûts estimés pour le projet s’élèvent à environ 1500€, couvrant :\n- Frais d’hébergement cloud\n- Utilisation d’API IA (ex : GPT-4)\n- Licences éventuelles pour bibliothèques externes\n- Services de monitoring et sécurité",
+    estimationCouts: "Le budget global estimé pour le projet s'élève à 75 000€, réparti comme suit :\n- Développement (frontend, backend, IA) : 45 000€\n- Design UX/UI : 10 000€\n- Infrastructure et hébergement cloud : 8 000€\n- Tests et assurance qualité : 7 000€\n- Formation et documentation : 5 000€",
   },
   criteresValidation: {
-    elementsVerifier: "- Présence et bon fonctionnement des fonctionnalités principales.\n- Temps de génération inférieur à 5 secondes.\n- Qualité du CV généré (pertinence, mise en page, conformité ATS).\n- Respect strict des obligations RGPD.",
-    scenariosTest: "- Génération d’un CV complet avec toutes les sections remplies.\n- Tests de robustesse avec données incomplètes ou mal saisies.\n- Sélection de différents modèles et exportation PDF.\n- Test d’accessibilité sur différentes plateformes (mobile, desktop).",
+    elementsVerifier: "- Qualité et pertinence des cahiers des charges générés\n- Performance de génération (temps de réponse < 3s)\n- Ergonomie et intuitivité de l'interface utilisateur\n- Fiabilité des recommandations de l'assistant IA\n- Sécurité et confidentialité des données\n- Compatibilité avec les différents navigateurs et appareils",
+    scenariosTest: "- Génération d'un cahier des charges complet pour un projet web\n- Test de l'assistant IA avec différents types de projets\n- Édition collaborative d'un document entre plusieurs utilisateurs\n- Importation de données externes et génération basée sur ces informations\n- Test de charge avec simulation de 1000 utilisateurs simultanés",
   },
   annexes: {
-    glossaire: "ATS : Applicant Tracking System, logiciel utilisé par les recruteurs pour filtrer les candidatures.\nRGPD : Règlement Général sur la Protection des Données, législation européenne protégeant les données personnelles.",
-    documentsComplementaires: "Maquettes d’interface utilisateur (mockups), schéma de la base de données relationnelle, documentation technique du back-end.",
-    referencesUtiles: "Guide européen du CV : https://europa.eu/youreurope/citizens/work/job-search/cv-online/index_fr.htm\nGénérateur de CV Zety : https://zety.fr/cv\nBonnes pratiques UX : https://uxdesign.cc",
+    glossaire: "CDC : Cahier Des Charges\nUX/UI : User Experience/User Interface\nRGPD : Règlement Général sur la Protection des Données\nAPI : Application Programming Interface\nIaaS : Infrastructure as a Service",
+    documentsComplementaires: "Wireframes de l'interface utilisateur, diagramme d'architecture système, modèle de données, benchmark concurrentiel détaillé.",
+    referencesUtiles: "Guide des bonnes pratiques pour la rédaction de cahiers des charges : https://guide-cdc.org\nDocumentation des API utilisées : https://api-docs.generator.io\nRéférentiel RGPD pour les applications web : https://cnil.fr/documentation",
   },
 });
 
@@ -203,8 +203,8 @@ const CDCForm = ({ onClose }) => {
       // Store the CDC data in localStorage for previewing
       localStorage.setItem('cdcGeneratedData', JSON.stringify(response.data));
       
-      // Construct a URL to view the React template component
-      const cdcPreviewUrl = `/cdc-template${response.data.id ? `?id=${response.data.id}` : ''}`;
+      // Construct a URL to view the React template component with generate parameter
+      const cdcPreviewUrl = `/cdc-template${response.data.id ? `?id=${response.data.id}&generate=true` : '?generate=true'}`;
       setGeneratedCdcUrl(cdcPreviewUrl);
       
       // Open in new tab
@@ -226,8 +226,8 @@ const CDCForm = ({ onClose }) => {
       // Create a mock successful scenario
       localStorage.setItem('cdcFormData', JSON.stringify(formData));
       
-      // Create a URL for the template
-      const cdcPreviewUrl = `/cdc-template`;
+      // Create a URL for the template with generate parameter
+      const cdcPreviewUrl = `/cdc-template?generate=true`;
       setGeneratedCdcUrl(cdcPreviewUrl);
       window.open(cdcPreviewUrl, '_blank');
       
